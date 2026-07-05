@@ -30,8 +30,22 @@ body {
     radial-gradient(2px 2px at 85% 60%, #fff, transparent),
     radial-gradient(1px 1px at 30% 80%, #fff, transparent),
     radial-gradient(1px 1px at 55% 45%, #fff, transparent),
+    radial-gradient(1px 1px at 5% 55%, #fff, transparent),
+    radial-gradient(1px 1px at 92% 35%, #fff, transparent),
+    radial-gradient(1px 1px at 40% 10%, #fff, transparent),
+    radial-gradient(1px 1px at 65% 90%, #fff, transparent),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cellipse cx='60' cy='60' rx='50' ry='20' fill='none' stroke='%232f7a6b' stroke-width='2'/%3E%3Cellipse cx='60' cy='60' rx='50' ry='20' fill='none' stroke='%232f7a6b' stroke-width='2' transform='rotate(60 60 60)'/%3E%3Cellipse cx='60' cy='60' rx='50' ry='20' fill='none' stroke='%232f7a6b' stroke-width='2' transform='rotate(120 60 60)'/%3E%3Ccircle cx='60' cy='60' r='6' fill='%23e8a93c'/%3E%3C/svg%3E"),
+    radial-gradient(circle at 12% 70%, transparent 0, transparent 89px, rgba(232, 169, 60, 0.35) 89px, rgba(232, 169, 60, 0.35) 91px, transparent 91px, transparent 100%),
+    radial-gradient(circle at 88% 8%, transparent 0, transparent 69px, rgba(47, 122, 107, 0.4) 69px, rgba(47, 122, 107, 0.4) 71px, transparent 71px, transparent 100%),
+    radial-gradient(circle at 90% 12%, rgba(232, 169, 60, 0.5) 0%, rgba(156, 106, 31, 0.3) 40%, transparent 70%),
+    radial-gradient(circle at 8% 30%, rgba(47, 122, 107, 0.4) 0%, transparent 65%),
+    radial-gradient(ellipse 380px 380px at 82% 78%, rgba(168, 71, 122, 0.55) 0%, rgba(74, 24, 48, 0.5) 45%, transparent 75%),
     repeating-linear-gradient(0deg, rgba(47, 122, 107, 0.08) 0 1px, transparent 1px 32px),
     repeating-linear-gradient(90deg, rgba(47, 122, 107, 0.08) 0 1px, transparent 1px 32px);
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat, repeat;
+  background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, left 16px bottom 16px, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
+  background-size: auto, auto, auto, auto, auto, auto, auto, auto, auto, 120px 120px, auto, auto, auto, auto, auto, 32px 32px, 32px 32px;
+  background-attachment: fixed;
 }
 
 header {
