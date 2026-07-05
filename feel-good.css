@@ -18,7 +18,8 @@ html {
 }
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Doto', 'VT323', monospace;
+  font-weight: 700;
   color: var(--white);
   margin: 0;
   padding: 0;
@@ -34,24 +35,46 @@ body {
     radial-gradient(1px 1px at 92% 35%, #fff, transparent),
     radial-gradient(1px 1px at 40% 10%, #fff, transparent),
     radial-gradient(1px 1px at 65% 90%, #fff, transparent),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cellipse cx='60' cy='60' rx='50' ry='20' fill='none' stroke='%232f7a6b' stroke-width='2'/%3E%3Cellipse cx='60' cy='60' rx='50' ry='20' fill='none' stroke='%232f7a6b' stroke-width='2' transform='rotate(60 60 60)'/%3E%3Cellipse cx='60' cy='60' rx='50' ry='20' fill='none' stroke='%232f7a6b' stroke-width='2' transform='rotate(120 60 60)'/%3E%3Ccircle cx='60' cy='60' r='6' fill='%23e8a93c'/%3E%3C/svg%3E"),
-    radial-gradient(circle at 12% 70%, transparent 0, transparent 89px, rgba(232, 169, 60, 0.35) 89px, rgba(232, 169, 60, 0.35) 91px, transparent 91px, transparent 100%),
-    radial-gradient(circle at 88% 8%, transparent 0, transparent 69px, rgba(47, 122, 107, 0.4) 69px, rgba(47, 122, 107, 0.4) 71px, transparent 71px, transparent 100%),
-    radial-gradient(circle at 90% 12%, rgba(232, 169, 60, 0.5) 0%, rgba(156, 106, 31, 0.3) 40%, transparent 70%),
-    radial-gradient(circle at 8% 30%, rgba(47, 122, 107, 0.4) 0%, transparent 65%),
-    radial-gradient(ellipse 380px 380px at 82% 78%, rgba(168, 71, 122, 0.55) 0%, rgba(74, 24, 48, 0.5) 45%, transparent 75%),
+    radial-gradient(1px 1px at 2% 12%, #fff, transparent),
+    radial-gradient(1px 1px at 22% 45%, #fff, transparent),
+    radial-gradient(1px 1px at 38% 65%, #fff, transparent),
+    radial-gradient(1px 1px at 48% 22%, #fff, transparent),
+    radial-gradient(1px 1px at 60% 8%, #fff, transparent),
+    radial-gradient(2px 2px at 75% 40%, #fff, transparent),
+    radial-gradient(1px 1px at 88% 88%, #fff, transparent),
+    radial-gradient(1px 1px at 95% 5%, #fff, transparent),
+    radial-gradient(1px 1px at 12% 92%, #fff, transparent),
+    radial-gradient(2px 2px at 45% 88%, #fff, transparent),
+    radial-gradient(1px 1px at 58% 58%, #fff, transparent),
+    radial-gradient(1px 1px at 25% 5%, #fff, transparent),
+    radial-gradient(1px 1px at 80% 22%, #fff, transparent),
+    radial-gradient(1px 1px at 10% 38%, #fff, transparent),
+    radial-gradient(2px 2px at 68% 72%, #fff, transparent),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cellipse cx='60' cy='60' rx='50' ry='20' fill='none' stroke='%232f7a6b' stroke-width='3'/%3E%3Cellipse cx='60' cy='60' rx='50' ry='20' fill='none' stroke='%232f7a6b' stroke-width='3' transform='rotate(60 60 60)'/%3E%3Cellipse cx='60' cy='60' rx='50' ry='20' fill='none' stroke='%232f7a6b' stroke-width='3' transform='rotate(120 60 60)'/%3E%3Ccircle cx='60' cy='60' r='7' fill='%23e8a93c'/%3E%3C/svg%3E"),
+    radial-gradient(circle at 15% 78%, transparent 0, transparent 92px, rgba(232, 169, 60, 0.75) 92px, rgba(232, 169, 60, 0.75) 97px, transparent 97px, transparent 100%),
+    radial-gradient(circle at 90% 10%, transparent 0, transparent 66px, rgba(255, 255, 255, 0.5) 66px, rgba(255, 255, 255, 0.5) 71px, transparent 71px, transparent 100%),
+    radial-gradient(circle 55px at 90% 14%, rgba(232, 169, 60, 0.95) 0%, rgba(156, 106, 31, 0.9) 60%, transparent 100%),
+    radial-gradient(circle 40px at 8% 28%, rgba(47, 122, 107, 0.9) 0%, rgba(20, 70, 60, 0.85) 60%, transparent 100%),
+    radial-gradient(circle 200px at 85% 82%, rgba(190, 90, 140, 0.95) 0%, rgba(120, 50, 90, 0.9) 55%, rgba(74, 24, 48, 0.6) 78%, transparent 100%),
     repeating-linear-gradient(0deg, rgba(47, 122, 107, 0.08) 0 1px, transparent 1px 32px),
     repeating-linear-gradient(90deg, rgba(47, 122, 107, 0.08) 0 1px, transparent 1px 32px);
-  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat, repeat;
-  background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, left 16px bottom 16px, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
-  background-size: auto, auto, auto, auto, auto, auto, auto, auto, auto, 120px 120px, auto, auto, auto, auto, auto, 32px 32px, 32px 32px;
-  background-attachment: fixed;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat, repeat;
+  background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, left 16px bottom 16px, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
+  background-size: auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, 120px 120px, auto, auto, auto, auto, auto, 32px 32px, 32px 32px;
 }
 
 header {
-  padding: 40px 20px 20px;
+  padding: 40px 20px 10px;
   text-align: center;
-  border-bottom: 2px solid var(--teal-green);
+}
+
+.blast-bubble {
+  display: inline-block;
+  margin: 0 auto;
+  padding: 75px 85px;
+  background: var(--teal-green);
+  clip-path: polygon(100% 50%, 86.1% 61.7%, 90.5% 79.4%, 72.3% 80.7%, 65.5% 97.6%, 50% 88%, 34.5% 97.6%, 27.7% 80.7%, 9.5% 79.4%, 13.9% 61.7%, 0% 50%, 13.9% 38.3%, 9.5% 20.6%, 27.7% 19.3%, 34.5% 2.4%, 50% 12%, 65.5% 2.4%, 72.3% 19.3%, 90.5% 20.6%, 86.1% 38.3%);
+  filter: drop-shadow(0 0 18px rgba(47, 122, 107, 0.7));
 }
 
 .kicker {
@@ -66,11 +89,12 @@ header {
 
 .masthead {
   font-family: 'Anton', sans-serif;
-  font-size: 48px;
+  font-size: 84px;
+  line-height: 1;
   letter-spacing: 2px;
   color: var(--cherry-red);
-  -webkit-text-stroke: 2px var(--white);
-  text-shadow: 3px 3px 0 var(--navy-black), 3px 3px 0 var(--navy-black);
+  -webkit-text-stroke: 3px var(--white);
+  text-shadow: 4px 4px 0 var(--navy-black), 4px 4px 0 var(--navy-black);
   transform: skewY(-2deg);
   display: inline-block;
 }
@@ -79,18 +103,18 @@ header {
   display: block;
   font-family: 'Anton', sans-serif;
   -webkit-text-stroke: 0;
-  font-size: 22px;
+  font-size: 32px;
   letter-spacing: 4px;
   color: var(--cherry-red);
   text-shadow: none;
   text-transform: uppercase;
-  margin-top: 6px;
+  margin-top: 10px;
   transform: none;
 }
 
 main {
   max-width: 700px;
-  margin: 60px auto;
+  margin: 10px auto 0;
   padding: 0 24px 60px;
   text-align: center;
 }
@@ -113,8 +137,8 @@ button {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 2px;
-  background: linear-gradient(180deg, var(--gold) 0%, var(--burnt-amber) 100%);
-  color: var(--navy-black);
+  background: linear-gradient(180deg, var(--magenta) 0%, var(--maroon) 100%);
+  color: var(--white);
   border: 2px solid var(--cherry-red);
   border-radius: 999px;
   padding: 16px 32px;
