@@ -9,19 +9,21 @@ document.addEventListener('DOMContentLoaded', function() {  // Wait for HTML to 
     button.addEventListener('click', function() {              // Listen for clicks on the button
         console.log('Button was clicked!');                    // Print message to console when button is clicked
         
-        // Create a message with current time
-        const currentTime = new Date().toLocaleTimeString();   // Get current time as a readable string
-        const message = 'Hello! You clicked the button at ' + currentTime;  // Create message combining text and time
-        
+        // Create a message with the current visit date and time
+        const now = new Date();                                 // Get the current date/time
+        const visitDate = now.toLocaleDateString();             // Format as a readable date
+        const visitTime = now.toLocaleTimeString();             // Format as a readable time
+        const message = 'You visited this site on ' + visitDate + ' at ' + visitTime;  // Create the visit-log message
+
         // Display the message in our HTML
         messageArea.textContent = message;                     // Put the message text into the HTML element
-        
+
         // Change button text temporarily
-        button.textContent = 'Thanks for clicking!';           // Change what the button displays
-        
+        button.textContent = 'Visit Logged!';                  // Change what the button displays
+
         // Reset button text after 2 seconds
         setTimeout(function() {                                // Run a function after a delay
-            button.textContent = 'Click Me!';                  // Change button text back to original
+            button.textContent = 'Record My Visit';            // Change button text back to original
         }, 2000);                                              // Wait 2000 milliseconds (2 seconds)
     });
 });

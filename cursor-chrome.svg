@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+  <defs>
+    <linearGradient id="chrome" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="30%" stop-color="#e8eef0"/>
+      <stop offset="55%" stop-color="#aab4b8"/>
+      <stop offset="80%" stop-color="#6e7376"/>
+      <stop offset="100%" stop-color="#3a3d40"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+      <stop offset="40%" stop-color="#2f7a6b" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#2f7a6b" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="blur" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3"/>
+    </filter>
+  </defs>
+  <circle cx="14" cy="14" r="16" fill="url(#glow)" filter="url(#blur)"/>
+  <path d="M7 6 L7 29 L13 23 L17 32 L21 30 L17 21 L25 21 Z" fill="url(#chrome)" stroke="#0d1b3a" stroke-width="1.3" stroke-linejoin="round"/>
+  <path d="M8.5 8 L8.5 16" stroke="#ffffff" stroke-width="1" stroke-linecap="round" opacity="0.85"/>
+</svg>
