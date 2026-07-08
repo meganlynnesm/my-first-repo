@@ -8,11 +8,27 @@
     <!-- p5.js library (local copy) -->
     <script src="p5_2D.js"></script>
 
-    <!-- three.js library + controls + noise helper (CDN) -->
+    <!-- three.js classic build (r128) + controls + noise helper, used by the
+         Mouse Painter/Blooming Flowers/Procedural Terrain sketches (CDN) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/FirstPersonControls.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/math/ImprovedNoise.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/FlyControls.js"></script>
+
+    <!-- Import map for the Occlusion Test sketch only: it needs the newer
+         WebGPU/TSL build of three.js, loaded as real ES modules. This is a
+         completely separate copy of the library from the classic build above -
+         module imports stay local to the module, so it can't collide with the
+         global THREE the other sketches use. -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.webgpu.js",
+          "three/webgpu": "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.webgpu.js",
+          "three/tsl": "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.tsl.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/"
+        }
+      }
+    </script>
 
     <link rel="stylesheet" href="p5-MM.css">
 </head>
@@ -59,10 +75,10 @@
         <div id="threejs-container-1"></div>
     </section>
 
-    <!-- Canvas 4: Icosahedron Field (three.js, FlyControls + LOD) -->
+    <!-- Canvas 4: Occlusion Test (three.js WebGPU + TSL, OrbitControls) -->
     <section class="sketch-section" id="sketch-4">
-        <div class="section-title">Icosahedron Field</div>
-        <p>1,000 wireframe icosahedra with level-of-detail switching; drag to steer, arrow keys to fly through.</p>
+        <div class="section-title">Occlusion Test</div>
+        <p>The plane turns maroon once it fully hides the sphere behind it; drag to orbit around. Requires a WebGPU-capable browser.</p>
         <div id="threejs-container-2"></div>
     </section>
 
@@ -72,7 +88,7 @@
     <script src="p5-MM-sketch1.js"></script>
     <script src="p5-MM-sketch2.js"></script>
     <script src="p5-MM-threejs1.js"></script>
-    <script src="p5-MM-threejs2.js"></script>
+    <script type="module" src="p5-MM-threejs2.js"></script>
 
 </body>
 

@@ -1,128 +1,123 @@
-// Three.js Sketch 2: Icosahedron Field (Level of Detail)
-// Adapted from the official three.js example "webgl_lod" -
-// swapped ES module imports for the classic CDN build already loaded on the page,
-// scoped to a fixed 400x400 canvas, replaced the white wireframe material with
-// the site's 5-color palette (cycled across objects), and set an off-black
-// background/fog instead of pure black.
+// Three.js Sketch 2: Occlusion Test (WebGPU)
+// Adapted from the official three.js example "webgpu_occlusion" -
+// this is a real ES module using three.js's newer WebGPURenderer and TSL
+// (node-based shading) system, which is a different runtime from the classic
+// WebGL build the rest of this page uses - see the <script type="importmap">
+// in p5-MM.html. Scoped to a fixed 400x400 canvas, dropped the full-window
+// resize handling, kept the off-black background, and recolored the plane's
+// two states + the sphere to the site's maroon and pink instead of the
+// original green/yellow/blue.
+//
+// Note: this requires a browser with WebGPU support (recent Chrome/Edge).
+// In a browser without it, this canvas simply won't render.
 
-// Wrapping everything in (function () { ... })() keeps all the variables below
-// private to this file, so they can't clash with the other sketch files on this page.
-(function () {
+import * as THREE from 'three/webgpu';
+import { uniform } from 'three/tsl';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+(async function () {
   var width = 400;
   var height = 400;
 
-  // The container is the empty <div> in the HTML that this canvas will live inside.
   var container = document.getElementById('threejs-container-2');
 
-  // THREE.Clock measures time between animation frames, so movement speed stays
-  // consistent no matter how fast or slow the browser is drawing frames.
-  var clock = new THREE.Clock();
+  // A "Node" lets you write a small custom piece of shader logic and plug it
+  // straight into a material - here, it recalculates the plane's color every
+  // frame based on whether the renderer reports the sphere as fully hidden
+  // (occluded) behind it.
+  class OcclusionNode extends THREE.Node {
+    constructor(testObject, normalColor, occludedColor) {
+      super('vec3'); // this node outputs a color (vec3 = red, green, blue)
 
-  // The camera is our "eye" into the 3D world.
-  // PerspectiveCamera(fieldOfView, aspectRatio, nearClip, farClip) - a wider
-  // fieldOfView (in degrees) sees more of the scene, like a wide-angle lens.
-  var camera = new THREE.PerspectiveCamera(45, width / height, 1, 15000);
-  camera.position.z = 1000; // start 1000 units back from the center of the scene
+      // OBJECT means "re-run update() once per object per frame" rather than
+      // once per vertex/pixel - we only need to check occlusion once per frame.
+      this.updateType = THREE.NodeUpdateType.OBJECT;
 
-  // The scene is the 3D world/container that holds every object, light, and fog.
-  var scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x1a1613); // off-black
-  // Fog fades distant objects into the background color as they get farther
-  // from the camera - it hides the "pop-in" as far away shapes suddenly appear.
-  scene.fog = new THREE.Fog(0x1a1613, 1, 15000);
+      // uniform() creates a value that can change over time but stays the
+      // same across every pixel the shader draws in a given frame.
+      this.uniformNode = uniform(new THREE.Color());
 
-  // Lights make the wireframe shapes visible with some shading/depth. Two kinds here:
-
-  // PointLight shines outward in all directions from a single point in space,
-  // like a bare lightbulb - here it sits at the center of the whole field (0,0,0).
-  // Arguments: color, intensity, distance (0 = no limit), decay (0 = no falloff).
-  var pointLight = new THREE.PointLight(0x922f3c, 3, 0, 0);
-  pointLight.position.set(0, 0, 0);
-  scene.add(pointLight);
-
-  // DirectionalLight shines evenly from one direction, like sunlight - every
-  // object gets lit from the same angle regardless of where it is in the scene.
-  var dirLight = new THREE.DirectionalLight(0xf6ca7d, 3);
-  dirLight.position.set(0, 0, 1).normalize();
-  scene.add(dirLight);
-
-  // LOD stands for "Level Of Detail." The idea: a shape far from the camera
-  // doesn't need as many triangles as one right in front of you, since you
-  // can't see the extra detail anyway - so we prepare several versions of the
-  // same icosahedron (a 20-sided shape), from very detailed to very simple.
-  //
-  // Each entry below is [geometry, distance]: "use this geometry once the
-  // object is at least this far from the camera." IcosahedronGeometry's second
-  // argument is its "detail" level - higher number = more triangles = smoother.
-  var geometryLevels = [
-    [new THREE.IcosahedronGeometry(100, 16), 50],   // closest = most detailed
-    [new THREE.IcosahedronGeometry(100, 8), 300],
-    [new THREE.IcosahedronGeometry(100, 4), 1000],
-    [new THREE.IcosahedronGeometry(100, 2), 2000],
-    [new THREE.IcosahedronGeometry(100, 1), 8000]   // farthest = simplest
-  ];
-
-  // One wireframe material per palette color. MeshLambertMaterial reacts to
-  // scene lights (unlike MeshBasicMaterial), and wireframe: true draws only
-  // the edges of each triangle instead of a solid filled surface.
-  var paletteColors = [0xcc8a8f, 0x922f3c, 0x738913, 0xf6ca7d, 0xe1e3af];
-  var paletteMaterials = paletteColors.map(function (color) {
-    return new THREE.MeshLambertMaterial({ color: color, wireframe: true });
-  });
-
-  // Create 1,000 LOD objects and scatter them randomly through a big 3D volume.
-  for (var j = 0; j < 1000; j++) {
-    var lod = new THREE.LOD();
-    // Cycle through the 5 palette materials (j % 5) so colors repeat evenly
-    // across all 1,000 objects instead of using the same color for all of them.
-    var material = paletteMaterials[j % paletteMaterials.length];
-
-    // Build every detail level for this one LOD object and register it.
-    for (var i = 0; i < geometryLevels.length; i++) {
-      var mesh = new THREE.Mesh(geometryLevels[i][0], material);
-      mesh.scale.set(1.5, 1.5, 1.5);
-      mesh.updateMatrix();
-      // matrixAutoUpdate = false is a performance optimization: since this
-      // mesh's position/scale never changes after this point, three.js
-      // doesn't need to recalculate its transform matrix every single frame.
-      mesh.matrixAutoUpdate = false;
-      lod.addLevel(mesh, geometryLevels[i][1]); // "use this mesh past this distance"
+      this.testObject = testObject;
+      this.normalColor = normalColor;
+      this.occludedColor = occludedColor;
     }
 
-    // Math.random() - 0.5 gives a value from -0.5 to 0.5, so multiplying by
-    // (for example) 10000 spreads objects randomly across a 10,000-unit range
-    // centered on zero, in every direction (x, y, and z).
-    lod.position.x = 10000 * (0.5 - Math.random());
-    lod.position.y = 7500 * (0.5 - Math.random());
-    lod.position.z = 10000 * (0.5 - Math.random());
-    lod.updateMatrix();
-    lod.matrixAutoUpdate = false;
-    scene.add(lod);
+    // Runs once per frame, before drawing: ask the renderer whether
+    // "testObject" (our sphere) is completely hidden behind other geometry
+    // from the camera's current point of view.
+    async update(frame) {
+      var isOccluded = frame.renderer.isOccluded(this.testObject);
+      this.uniformNode.value.copy(isOccluded ? this.occludedColor : this.normalColor);
+    }
+
+    // Tells the shader system: "use this uniform value as the output color."
+    setup() {
+      return this.uniformNode;
+    }
   }
 
-  // The renderer draws (renders) the scene, as seen through the camera, into a
-  // <canvas> element - that's the actual picture you see on the page.
-  var renderer = new THREE.WebGLRenderer({ antialias: true }); // antialias smooths jagged edges
-  renderer.setPixelRatio(window.devicePixelRatio); // sharper rendering on high-DPI screens
+  // The camera is our "eye" into the 3D world.
+  // PerspectiveCamera(fieldOfView, aspectRatio, nearClip, farClip).
+  var camera = new THREE.PerspectiveCamera(50, width / height, 0.01, 100);
+  camera.position.z = 7;
+
+  // The scene holds every object, light, and background setting.
+  var scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x1a1613); // off-black, matches the rest of the page
+
+  // AmbientLight lights every surface evenly from all directions (like soft,
+  // indirect daylight) so nothing is ever pitch black.
+  var ambientLight = new THREE.AmbientLight(0xb0b0b0);
+  // DirectionalLight shines from one direction, like sunlight, adding
+  // brighter highlights and shadowed sides to give the shapes some depth.
+  var light = new THREE.DirectionalLight(0xffffff, 1.0);
+  light.position.set(0.32, 0.39, 0.7);
+  scene.add(ambientLight);
+  scene.add(light);
+
+  var planeGeometry = new THREE.PlaneGeometry(2, 2);
+  var sphereGeometry = new THREE.SphereGeometry(0.5);
+
+  // MeshPhongNodeMaterial is the node-based version of the classic Phong
+  // material (shiny, reacts to lights) - it's what lets us swap in our
+  // custom OcclusionNode as the plane's color source below.
+  var plane = new THREE.Mesh(
+    planeGeometry,
+    new THREE.MeshPhongNodeMaterial({ color: 0xcc8a8f, side: THREE.DoubleSide })
+  );
+  var sphere = new THREE.Mesh(
+    sphereGeometry,
+    new THREE.MeshPhongNodeMaterial({ color: 0xcc8a8f })
+  );
+
+  // Pink while the sphere is visible, maroon once the plane fully hides it.
+  var occlusionColor = new OcclusionNode(sphere, new THREE.Color(0xcc8a8f), new THREE.Color(0x922f3c));
+  // colorNode overrides the material's normal color with our custom node's
+  // output, so the plane's color is now driven by the occlusion test above.
+  plane.material.colorNode = occlusionColor;
+
+  sphere.position.z = -1; // sits just behind the plane, from the camera's starting view
+  sphere.occlusionTest = true; // tells the renderer to track this object's visibility
+
+  scene.add(plane);
+  scene.add(sphere);
+
+  // WebGPURenderer works like the classic WebGLRenderer (draws the scene into
+  // a <canvas>), but talks to the newer WebGPU browser API instead of WebGL,
+  // which is what lets it run occlusion queries (isOccluded) efficiently.
+  var renderer = new THREE.WebGPURenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(width, height);
-  container.appendChild(renderer.domElement); // add the canvas to our page
+  renderer.setAnimationLoop(render); // WebGPU's version of a requestAnimationFrame loop
+  container.appendChild(renderer.domElement);
 
-  // FlyControls gives free-flight movement: drag the mouse to steer/roll, and
-  // use the arrow keys (or WASD) to move forward/back/side to side - like
-  // piloting a small ship through the field of shapes, rather than orbiting
-  // around a fixed point.
-  var controls = new THREE.FlyControls(camera, renderer.domElement);
-  controls.movementSpeed = 1000;
-  controls.rollSpeed = Math.PI / 10;
+  // OrbitControls lets you click-and-drag to orbit the camera around the
+  // scene's center, and scroll/pinch to zoom between minDistance and maxDistance.
+  var controls = new OrbitControls(camera, renderer.domElement);
+  controls.minDistance = 3;
+  controls.maxDistance = 25;
 
-  // The animation loop: this function calls itself roughly 60 times per second
-  // via requestAnimationFrame, which asks the browser to run it right before
-  // the next screen repaint (smoother and more efficient than a fixed timer).
-  function animate() {
-    requestAnimationFrame(animate);
-    controls.update(clock.getDelta()); // move the camera based on user input + time passed
-    renderer.render(scene, camera);    // draw the current frame (three.js swaps the correct
-                                        // LOD detail level in automatically based on distance)
+  function render() {
+    renderer.render(scene, camera);
   }
-  animate(); // kick off the loop
 })();
