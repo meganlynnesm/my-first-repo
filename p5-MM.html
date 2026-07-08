@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>MM - p5.js Sketches</title>
+
+    <!-- p5.js library (local copy) -->
+    <script src="p5_2D.js"></script>
+
+    <link rel="stylesheet" href="p5-MM.css">
+</head>
+
+<body>
+
+    <section class="hero">
+    <div class="hero-topbar">
+        <div>P5.JS<br>THREE.JS</div>
+        <div>GSAPP</div>
+    </div>
+
+    <div class="hero-center">
+        <h1 class="hero-title">SKETCH EXPLORATIONS</h1>
+        <p class="hero-subtitle">Computational Design Workflow</p>
+    </div>
+
+    <div class="hero-bottombar">
+        <div class="hero-stat">4 UNIQUE<br>SKETCHES</div>
+        <div class="hero-stat">MEGAN MACKIN</div>
+        <div class="hero-stat">400 X 400 PX<br>CANVAS SIZE</div>
+    </div>
+    </section>
+
+    <main>
+
+    <!-- Canvas 1: Mouse Painter -->
+    <section class="sketch-section" id="sketch-1">
+        <div class="section-title">Mouse Painter</div>
+        <p>Move the mouse to draw circles; click and hold to change color.</p>
+        <div id="canvas-container-1"></div>
+    </section>
+
+    <!-- Canvas 2: Blooming Flowers -->
+    <section class="sketch-section" id="sketch-2">
+        <div class="section-title">Blooming Flowers</div>
+        <p>Flowers randomly bloom and wilt.</p>
+        <div id="canvas-container-2"></div>
+    </section>
+
+    </main>
+
+    <!-- Sketch scripts (instance mode, one per canvas) -->
+    <script src="p5-MM-sketch1.js"></script>
+    <script src="p5-MM-sketch2.js"></script>
+
+</body>
+
+</html>
