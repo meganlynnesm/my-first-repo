@@ -87,7 +87,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
   );
   var sphere = new THREE.Mesh(
     sphereGeometry,
-    new THREE.MeshPhongNodeMaterial({ color: 0xcc8a8f })
+    new THREE.MeshPhongNodeMaterial({ color: 0x738913 })
   );
 
   // Pink while the sphere is visible, maroon once the plane fully hides it.
