@@ -10,9 +10,9 @@
 
     <!-- three.js library + controls + noise helper (CDN) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/FirstPersonControls.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/math/ImprovedNoise.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/FlyControls.js"></script>
 
     <link rel="stylesheet" href="p5-MM.css">
 </head>
@@ -60,10 +60,10 @@
         <div id="threejs-container-1"></div>
     </section>
 
-    <!-- Canvas 4: Orbit Scene (three.js, OrbitControls) -->
+    <!-- Canvas 4: Icosahedron Field (three.js, FlyControls + LOD) -->
     <section class="sketch-section" id="sketch-4">
-        <div class="section-title">Orbit Scene</div>
-        <p>Drag to orbit the camera around a small cluster of 3D primitives.</p>
+        <div class="section-title">Icosahedron Field</div>
+        <p>1,000 wireframe icosahedra with level-of-detail switching; drag to steer, arrow keys to fly through.</p>
         <div id="threejs-container-2"></div>
     </section>
 
