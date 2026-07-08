@@ -3,6 +3,8 @@
 :root {
   --rose: #CC8A8F;
   --maroon: #922F3C;
+  --olive: #738913;
+  --gold: #F6CA7D;
   --pale: #E1E3AF;
   --offwhite: #FAF7F1;
 }
@@ -132,7 +134,9 @@ body {
 }
 
 #canvas-container-1,
-#canvas-container-2 {
+#canvas-container-2,
+#threejs-container-1,
+#threejs-container-2 {
   border: 1px solid #eee;
   border-radius: 4px;
   overflow: hidden;

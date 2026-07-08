@@ -8,6 +8,12 @@
     <!-- p5.js library (local copy) -->
     <script src="p5_2D.js"></script>
 
+    <!-- three.js library + controls + noise helper (CDN) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/FirstPersonControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/math/ImprovedNoise.js"></script>
+
     <link rel="stylesheet" href="p5-MM.css">
 </head>
 
@@ -47,11 +53,27 @@
         <div id="canvas-container-2"></div>
     </section>
 
+    <!-- Canvas 3: Procedural Terrain (three.js) -->
+    <section class="sketch-section" id="sketch-3">
+        <div class="section-title">Procedural Terrain</div>
+        <p>Perlin-noise-generated terrain with sun-shaded texture and fog; drag to look around, arrow keys to fly.</p>
+        <div id="threejs-container-1"></div>
+    </section>
+
+    <!-- Canvas 4: Orbit Scene (three.js, OrbitControls) -->
+    <section class="sketch-section" id="sketch-4">
+        <div class="section-title">Orbit Scene</div>
+        <p>Drag to orbit the camera around a small cluster of 3D primitives.</p>
+        <div id="threejs-container-2"></div>
+    </section>
+
     </main>
 
     <!-- Sketch scripts (instance mode, one per canvas) -->
     <script src="p5-MM-sketch1.js"></script>
     <script src="p5-MM-sketch2.js"></script>
+    <script src="p5-MM-threejs1.js"></script>
+    <script src="p5-MM-threejs2.js"></script>
 
 </body>
 
