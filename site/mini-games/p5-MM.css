@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap');
+
+:root {
+  --rose: #CC8A8F;
+  --maroon: #922F3C;
+  --olive: #738913;
+  --gold: #F6CA7D;
+  --pale: #E1E3AF;
+  --offwhite: #FAF7F1;
+  --offblack: #1A1613;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y proximity;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f5ead6;
+  color: #111;
+  margin: 0;
+  padding: 0;
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 40px 48px;
+  color: #fff;
+  scroll-snap-align: start;
+  background:
+    radial-gradient(circle at 18% 20%, var(--pale) 0%, rgba(225, 227, 175, 0) 42%),
+    radial-gradient(circle at 82% 15%, var(--rose) 0%, rgba(204, 138, 143, 0) 48%),
+    radial-gradient(circle at 50% 55%, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 32%),
+    radial-gradient(circle at 85% 88%, var(--maroon) 0%, rgba(146, 47, 60, 0) 55%),
+    radial-gradient(circle at 12% 88%, var(--rose) 0%, rgba(204, 138, 143, 0) 50%),
+    linear-gradient(160deg, var(--rose) 0%, var(--maroon) 55%, var(--pale) 100%);
+}
+
+.hero-topbar,
+.hero-bottombar {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+.hero-topbar div {
+  line-height: 1.5;
+}
+
+.hero-topbar div:last-child {
+  text-align: right;
+}
+
+.hero-bottombar {
+  border-top: 1px solid rgba(255, 255, 255, 0.35);
+  padding-top: 20px;
+}
+
+.hero-stat {
+  flex: 1;
+  line-height: 1.5;
+}
+
+.hero-stat:nth-child(2) {
+  text-align: center;
+}
+
+.hero-stat:last-child {
+  text-align: right;
+}
+
+.hero-center {
+  text-align: center;
+  margin: auto 0;
+}
+
+.hero-title {
+  font-size: clamp(48px, 9vw, 110px);
+  font-weight: 700;
+  letter-spacing: 4px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.hero-subtitle {
+  font-size: clamp(16px, 2.4vw, 26px);
+  font-weight: 300;
+  margin: 12px 0 0;
+  letter-spacing: 1px;
+}
+
+/* ---------- Sketch sections ---------- */
+
+.sketch-section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  scroll-snap-align: start;
+}
+
+.section-title {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: var(--maroon);
+}
+
+.sketch-section p {
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0 0 24px;
+  color: #444;
+  max-width: 400px;
+}
+
+#canvas-container-1,
+#canvas-container-2,
+#threejs-container-1,
+#threejs-container-2 {
+  border: 1px solid #eee;
+  border-radius: 4px;
+  overflow: hidden;
+  width: 400px;
+  box-shadow: 0 12px 32px rgba(146, 47, 60, 0.12);
+}

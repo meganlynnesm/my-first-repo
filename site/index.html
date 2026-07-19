@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Green Thumbs</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --rose: #CC8A8F;
+    --maroon: #922F3C;
+    --olive: #738913;
+    --gold: #F6CA7D;
+    --pale: #E1E3AF;
+    --offwhite: #FAF7F1;
+    --offblack: #1A1613;
+  }
+  * { box-sizing: border-box; }
+  html {
+    scroll-behavior: smooth;
+    scroll-snap-type: y proximity;
+  }
+  body {
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background-color: #f5ead6;
+    color: #111;
+    margin: 0; padding: 0;
+  }
+
+  /* ---------- Hero (matches the sketch-explorations landing) ---------- */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 40px 48px;
+    color: #fff;
+    scroll-snap-align: start;
+    background:
+      radial-gradient(circle at 16% 18%, #cf8ba0 0%, rgba(207, 139, 160, 0) 46%),
+      radial-gradient(circle at 84% 16%, #86a24a 0%, rgba(134, 162, 74, 0) 48%),
+      radial-gradient(circle at 50% 52%, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0) 34%),
+      radial-gradient(circle at 82% 84%, #b0495a 0%, rgba(176, 73, 90, 0) 52%),
+      radial-gradient(circle at 10% 90%, #f5ead6 0%, rgba(245, 234, 214, 0) 54%),
+      linear-gradient(150deg, #cf8ba0 0%, #922F3C 48%, #5f6e2a 100%);
+  }
+  .hero-topbar, .hero-bottombar {
+    display: flex; justify-content: space-between;
+    font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase;
+    font-weight: 400; opacity: 0.9;
+  }
+  .hero-topbar div { line-height: 1.5; }
+  .hero-topbar div:last-child { text-align: right; }
+  .hero-bottombar { border-top: 1px solid rgba(255, 255, 255, 0.35); padding-top: 20px; }
+  .hero-stat { flex: 1; line-height: 1.5; }
+  .hero-stat:nth-child(2) { text-align: center; }
+  .hero-stat:last-child { text-align: right; }
+  .hero-center { text-align: center; margin: auto 0; }
+  .hero-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(52px, 10vw, 132px); font-weight: 500; letter-spacing: 0;
+    margin: 0; text-transform: none; line-height: 1;
+  }
+  .hero-subtitle {
+    font-size: clamp(16px, 2.4vw, 26px); font-weight: 300; margin: 12px 0 0; letter-spacing: 1px;
+  }
+  /* Scroll cue */
+  .scroll-cue {
+    position: absolute; left: 50%; bottom: 92px; transform: translateX(-50%);
+    color: #fff; text-decoration: none; text-align: center;
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.9;
+  }
+  .scroll-cue .chev { display: block; font-size: 22px; margin-top: 4px; animation: bob 1.6s ease-in-out infinite; }
+  @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+
+  /* ---------- Navigation tabs ---------- */
+  .nav {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 72px 24px; scroll-snap-align: start;
+  }
+  .nav-head { text-align: center; margin-bottom: 40px; }
+  .nav-head .eyebrow {
+    text-transform: uppercase; letter-spacing: 3px; font-size: 12px;
+    color: var(--maroon); font-weight: 500;
+  }
+  .nav-head h2 { margin: 10px 0 0; font-weight: 700; font-size: clamp(26px, 4vw, 40px); color: var(--offblack); }
+
+  .cards {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 28px; max-width: 940px; width: 100%; margin: 0 auto;
+  }
+  .card {
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    min-height: 320px; padding: 30px;
+    border-radius: 22px; text-decoration: none; color: #fff;
+    box-shadow: 0 10px 30px rgba(146, 47, 60, 0.18);
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .card:hover { transform: translateY(-6px); box-shadow: 0 18px 44px rgba(146, 47, 60, 0.28); }
+  .card.games { background: linear-gradient(150deg, var(--rose), var(--maroon)); }
+  .card.garden { background: linear-gradient(150deg, #93a83a, #4f5e0f); }
+  .card .tag {
+    align-self: flex-start; font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,0.18); margin-bottom: auto;
+  }
+  .card h3 { margin: 0 0 8px; font-size: 28px; font-weight: 700; }
+  .card p { margin: 0 0 4px; font-size: 14px; line-height: 1.55; color: rgba(255,255,255,0.92); }
+  .card .go { margin-top: 16px; font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
+  .card .go .arrow { transition: transform .2s ease; }
+  .card:hover .go .arrow { transform: translateX(5px); }
+  .card .motif { position: absolute; top: -22px; right: -22px; opacity: 0.24; pointer-events: none; fill: #fff; }
+
+  footer {
+    text-align: center; padding: 22px; font-size: 12px; color: #8a5d63;
+    border-top: 1px solid rgba(146, 47, 60, 0.14);
+  }
+  footer a { color: var(--maroon); text-decoration: none; }
+
+  @media (max-width: 640px) { .hero { padding: 28px 22px; } }
+</style>
+</head>
+<body>
+
+  <!-- ---------- Hero ---------- -->
+  <section class="hero">
+    <div class="hero-topbar">
+      <div>P5.JS<br>THREE.JS<br>D3.JS</div>
+      <div>GSAPP</div>
+    </div>
+
+    <div class="hero-center">
+      <h1 class="hero-title">Green Thumbs</h1>
+      <p class="hero-subtitle">Computational Design Workflow</p>
+    </div>
+
+    <div class="hero-bottombar">
+      <div class="hero-stat">Project Archive</div>
+      <div class="hero-stat">2 Projects</div>
+      <div class="hero-stat">Megan Mackin</div>
+    </div>
+
+    <a class="scroll-cue" href="#projects">Explore<span class="chev">&#8595;</span></a>
+  </section>
+
+  <!-- ---------- Navigation tabs ---------- -->
+  <section class="nav" id="projects">
+    <div class="nav-head">
+      <div class="eyebrow">Navigate</div>
+      <h2>Two Explorations</h2>
+    </div>
+
+    <div class="cards">
+      <a class="card games" href="mini-games/index.html">
+        <svg class="motif" width="235" height="235" viewBox="0 0 100 100" aria-hidden="true">
+          <path transform="rotate(4 50 50)"   d="M50,49 C39,48 32,38 33,27 C34,16 43,7 51,8 C60,9 67,19 65,30 C63,40 59,47 50,49 Z"/>
+          <path transform="rotate(65 50 50)"  d="M50,48 C41,47 35,39 35,30 C35,20 43,13 50,13 C58,13 65,21 64,30 C63,39 58,47 50,48 Z"/>
+          <path transform="rotate(122 50 50)" d="M50,49 C39,48 32,38 33,27 C34,16 43,7 51,8 C60,9 67,19 65,30 C63,40 59,47 50,49 Z"/>
+          <path transform="rotate(180 50 50)" d="M50,47 C43,46 38,40 38,33 C38,25 44,19 50,19 C57,19 62,26 61,33 C60,40 57,46 50,47 Z"/>
+          <path transform="rotate(238 50 50)" d="M50,48 C41,47 35,39 35,30 C35,20 43,13 50,13 C58,13 65,21 64,30 C63,39 58,47 50,48 Z"/>
+          <path transform="rotate(302 50 50)" d="M50,49 C39,48 32,38 33,27 C34,16 43,7 51,8 C60,9 67,19 65,30 C63,40 59,47 50,49 Z"/>
+          <circle cx="49.5" cy="50.5" r="8.5"/>
+        </svg>
+        <span class="tag">P5.js · three.js</span>
+        <h3>Mini Games</h3>
+        <p>Four interactive sketch explorations — Mouse Painter, Blooming Flowers, Procedural Terrain, and an Occlusion test.</p>
+        <span class="go">Enter <span class="arrow">&#8594;</span></span>
+      </a>
+
+      <a class="card garden" href="green-thumb/index.html">
+        <svg class="motif" width="235" height="235" viewBox="0 0 100 100" aria-hidden="true">
+          <path transform="rotate(8 50 50)"   d="M50,49 C39,48 32,38 33,27 C34,16 43,7 51,8 C60,9 67,19 65,30 C63,40 59,47 50,49 Z"/>
+          <path transform="rotate(74 50 50)"  d="M50,47 C43,46 38,40 38,33 C38,25 44,19 50,19 C57,19 62,26 61,33 C60,40 57,46 50,47 Z"/>
+          <path transform="rotate(146 50 50)" d="M50,48 C41,47 35,39 35,30 C35,20 43,13 50,13 C58,13 65,21 64,30 C63,39 58,47 50,48 Z"/>
+          <path transform="rotate(212 50 50)" d="M50,49 C39,48 32,38 33,27 C34,16 43,7 51,8 C60,9 67,19 65,30 C63,40 59,47 50,49 Z"/>
+          <path transform="rotate(288 50 50)" d="M50,48 C41,47 35,39 35,30 C35,20 43,13 50,13 C58,13 65,21 64,30 C63,39 58,47 50,48 Z"/>
+          <circle cx="50.5" cy="49.5" r="9"/>
+        </svg>
+        <span class="tag">D3.js · NYC Open Data</span>
+        <h3>Green Thumb Info</h3>
+        <p>NYC GreenThumb community gardens as a zoomable circle-packing chart — 635 gardens by borough, jurisdiction, and footprint.</p>
+        <span class="go">Explore <span class="arrow">&#8594;</span></span>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    Data: <a href="https://data.cityofnewyork.us" target="_blank" rel="noopener">NYC Open Data</a> · Columbia GSAPP · Computational Design Workflows, 2026
+  </footer>
+
+</body>
+</html>

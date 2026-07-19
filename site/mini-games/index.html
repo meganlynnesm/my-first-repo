@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>MM - p5.js Sketches</title>
+
+    <!-- p5.js library (local copy) -->
+    <script src="p5_2D.js"></script>
+
+    <!-- three.js classic build (r128) + controls + noise helper, used by the
+         Mouse Painter/Blooming Flowers/Procedural Terrain sketches (CDN) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/FirstPersonControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/math/ImprovedNoise.js"></script>
+
+    <!-- Import map for the Occlusion Test sketch only: it needs the newer
+         WebGPU/TSL build of three.js, loaded as real ES modules. This is a
+         completely separate copy of the library from the classic build above -
+         module imports stay local to the module, so it can't collide with the
+         global THREE the other sketches use. -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.webgpu.js",
+          "three/webgpu": "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.webgpu.js",
+          "three/tsl": "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.tsl.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/"
+        }
+      }
+    </script>
+
+    <link rel="stylesheet" href="p5-MM.css">
+
+    <!-- Editorial intro screen (red-on-cream) -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+      :root { --cream: #f5ead6; --red: #6e1f38; }
+      .intro {
+        min-height: 100vh; background: var(--cream); color: var(--red);
+        display: flex; flex-direction: column; padding: 32px 44px;
+        font-family: 'Roboto', sans-serif; box-sizing: border-box;
+      }
+      .intro-nav { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; }
+      .intro-brand .name { font-weight: 700; font-size: 13px; letter-spacing: .4px; text-transform: uppercase; }
+      .intro-brand .role { font-size: 12px; margin-top: 2px; }
+      .intro-links { display: flex; gap: 30px; flex-wrap: wrap; justify-content: flex-end; }
+      .intro-links a { color: var(--red); text-decoration: none; font-weight: 700; font-size: 13px; letter-spacing: .4px; text-transform: uppercase; white-space: nowrap; }
+      .intro-links a sup { font-size: 9px; font-weight: 400; margin-left: 1px; }
+      .intro-links a.active, .intro-links a:hover { text-decoration: underline; text-underline-offset: 3px; }
+      .intro-center { margin: auto; text-align: center; max-width: 1000px; }
+      .intro-title { font-family: 'Playfair Display', Georgia, serif; font-weight: 500; font-size: clamp(52px, 11vw, 140px); line-height: .98; margin: 0; }
+      .intro-desc { font-size: 12px; letter-spacing: .6px; line-height: 1.7; margin: 26px auto 0; text-transform: uppercase; max-width: 430px; }
+      .intro-cta { display: inline-block; margin-top: 38px; color: var(--red); font-size: 12px; letter-spacing: .6px; text-transform: uppercase; text-decoration: underline; text-underline-offset: 3px; }
+      @media (max-width: 640px) { .intro { padding: 22px; } .intro-links { gap: 16px; } }
+    </style>
+</head>
+
+<body>
+
+    <section class="intro">
+      <div class="intro-nav">
+        <div class="intro-brand">
+          <div class="name">Megan Mackin</div>
+          <div class="role">Computational Design Workflow</div>
+        </div>
+        <nav class="intro-links">
+          <a href="../index.html">Home</a>
+          <a class="active" href="../mini-games/index.html">Mini Games<sup>4</sup></a>
+          <a href="../green-thumb/index.html">Green Thumb<sup>635</sup></a>
+        </nav>
+      </div>
+
+      <div class="intro-center">
+        <h1 class="intro-title">Mini Games</h1>
+        <p class="intro-desc">Four interactive p5.js &amp; three.js sketches — mouse painter, blooming flowers, procedural terrain &amp; occlusion</p>
+        <a class="intro-cta" href="#sketch-1">View sketches &#8595;</a>
+      </div>
+    </section>
+
+    <main>
+
+    <!-- Canvas 1: Mouse Painter -->
+    <section class="sketch-section" id="sketch-1">
+        <div class="section-title">Mouse Painter</div>
+        <p>Move the mouse to draw circles; click and hold to change color.</p>
+        <div id="canvas-container-1"></div>
+    </section>
+
+    <!-- Canvas 2: Blooming Flowers -->
+    <section class="sketch-section" id="sketch-2">
+        <div class="section-title">Blooming Flowers</div>
+        <p>Flowers randomly bloom and wilt.</p>
+        <div id="canvas-container-2"></div>
+    </section>
+
+    <!-- Canvas 3: Procedural Terrain (three.js) -->
+    <section class="sketch-section" id="sketch-3">
+        <div class="section-title">Procedural Terrain</div>
+        <p>Terrain with sun-shaded texture and fog; drag to look around, left and rightarrow keys to fly.</p>
+        <div id="threejs-container-1"></div>
+    </section>
+
+    <!-- Canvas 4: Occlusion Test (three.js WebGPU + TSL, OrbitControls) -->
+    <section class="sketch-section" id="sketch-4">
+        <div class="section-title">Occlusion</div>
+        <p>The plane turns maroon once it fully hides the sphere behind it; drag to orbit around.<br>Requires a WebGPU-capable browser.</p>
+        <div id="threejs-container-2"></div>
+    </section>
+
+    </main>
+
+    <!-- Sketch scripts (instance mode, one per canvas) -->
+    <script src="p5-MM-sketch1.js"></script>
+    <script src="p5-MM-sketch2.js"></script>
+    <script src="p5-MM-threejs1.js"></script>
+    <script type="module" src="p5-MM-threejs2.js"></script>
+
+</body>
+
+</html>
