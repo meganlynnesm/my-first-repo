@@ -1,0 +1,211 @@
+/* ============================================================
+   Garden Guide — floating chat widget
+   Styled to the Green Thumbs palette so the bot reads as part
+   of the project, not a bolted-on tutorial demo.
+   ============================================================ */
+
+.gg-widget {
+  /* Local copies of the site palette so the widget also works
+     on subpages that don't define these :root variables. */
+  --gg-rose:    #CC8A8F;
+  --gg-maroon:  #922F3C;
+  --gg-olive:   #738913;
+  --gg-gold:    #F6CA7D;
+  --gg-pale:    #E1E3AF;
+  --gg-offwhite:#FAF7F1;
+  --gg-offblack:#1A1613;
+
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 9999;
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Hidden until the visitor scrolls past the landing page (see JS).
+     .gg-revealed is toggled on by the IntersectionObserver. */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(14px);
+  transition: opacity .3s ease, transform .3s ease, visibility .3s;
+}
+.gg-widget.gg-revealed {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+/* ---------- Launcher bubble: leaf emoji on a flat pink circle ---------- */
+.gg-launcher {
+  width: 62px;
+  height: 62px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  line-height: 1;
+  background: var(--gg-rose);           /* flat pink, no gradient */
+  box-shadow: 0 6px 16px rgba(146, 47, 60, 0.22);
+  transition: transform .2s ease;
+}
+.gg-launcher:hover { transform: translateY(-3px) scale(1.04); }
+.gg-launcher.gg-hidden { display: none; }
+
+/* ---------- Chat panel ---------- */
+.gg-panel {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: min(370px, calc(100vw - 40px));
+  height: min(560px, calc(100vh - 48px));
+  display: flex;
+  flex-direction: column;
+  background: var(--gg-offwhite);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 22px 60px rgba(26, 22, 19, 0.32);
+  animation: gg-pop .22s ease-out;
+}
+.gg-panel[hidden] { display: none; }
+
+@keyframes gg-pop {
+  from { transform: translateY(16px) scale(.98); opacity: 0; }
+  to   { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* ---------- Header ---------- */
+.gg-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  color: #fff;
+  background: var(--gg-maroon);   /* solid header colour */
+}
+.gg-header-title { display: flex; align-items: center; gap: 10px; }
+.gg-avatar {
+  width: 38px; height: 38px; flex: none;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 50%;
+}
+.gg-header-title strong {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 18px;
+  font-weight: 600;
+  display: block;
+  line-height: 1.1;
+}
+.gg-status {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; opacity: 0.92; margin-top: 2px;
+}
+.gg-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--gg-gold);
+  box-shadow: 0 0 0 3px rgba(246, 202, 125, 0.25);
+  transition: background .3s ease, box-shadow .3s ease;
+}
+.gg-dot.gg-on  { background: #7bd88f; box-shadow: 0 0 0 3px rgba(123, 216, 143, 0.25); }
+.gg-dot.gg-off { background: #f08a8a; box-shadow: 0 0 0 3px rgba(240, 138, 138, 0.25); }
+.gg-close {
+  background: none; border: none; color: #fff;
+  font-size: 24px; line-height: 1; cursor: pointer;
+  opacity: 0.85; padding: 0 4px;
+}
+.gg-close:hover { opacity: 1; }
+
+/* ---------- Messages ---------- */
+.gg-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(225, 227, 175, 0.35) 0%, rgba(225, 227, 175, 0) 42%),
+    var(--gg-offwhite);
+}
+.gg-msg { display: flex; max-width: 84%; animation: gg-fade .25s ease-out; }
+.gg-msg.gg-user { align-self: flex-end; }
+.gg-msg.gg-bot  { align-self: flex-start; }
+
+@keyframes gg-fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.gg-bubble {
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+.gg-bot .gg-bubble {
+  background: #fff;
+  color: var(--gg-offblack);
+  border: 1px solid rgba(146, 47, 60, 0.14);
+  border-bottom-left-radius: 5px;
+}
+.gg-user .gg-bubble {
+  background: linear-gradient(150deg, var(--gg-rose), var(--gg-maroon));
+  color: #fff;
+  border-bottom-right-radius: 5px;
+}
+
+/* Typing indicator */
+.gg-typing .gg-bubble { display: inline-flex; gap: 4px; align-items: center; }
+.gg-typing .gg-bubble i {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--gg-maroon); opacity: 0.5;
+  animation: gg-blink 1.2s infinite ease-in-out;
+}
+.gg-typing .gg-bubble i:nth-child(2) { animation-delay: .18s; }
+.gg-typing .gg-bubble i:nth-child(3) { animation-delay: .36s; }
+@keyframes gg-blink { 0%, 80%, 100% { opacity: 0.25; } 40% { opacity: 0.9; } }
+
+/* ---------- Input ---------- */
+.gg-input {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  background: #fff;
+  border-top: 1px solid rgba(146, 47, 60, 0.12);
+}
+.gg-input input {
+  flex: 1;
+  padding: 11px 14px;
+  border: 1.5px solid rgba(146, 47, 60, 0.18);
+  border-radius: 999px;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color .2s ease;
+}
+.gg-input input:focus { border-color: var(--gg-maroon); }
+.gg-send {
+  width: 44px; height: 44px; flex: none;
+  border: none; border-radius: 50%; cursor: pointer;
+  color: #fff; font-size: 16px;
+  background: linear-gradient(150deg, var(--gg-olive), #4f5e0f);
+  transition: transform .15s ease, opacity .2s ease;
+}
+.gg-send:hover:not(:disabled) { transform: scale(1.06); }
+.gg-send:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.gg-hint {
+  padding: 0 14px 10px;
+  background: #fff;
+  font-size: 11px;
+  color: #8a5d63;
+  text-align: center;
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 480px) {
+  .gg-widget { right: 16px; bottom: 16px; }
+  .gg-panel { width: calc(100vw - 32px); height: calc(100vh - 40px); }
+}

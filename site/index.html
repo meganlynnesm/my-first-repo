@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Green Thumbs</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+
+<!-- Garden Guide chat widget: Firebase SDK + widget styles -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+<link rel="stylesheet" href="garden-guide.css" />
 <style>
   :root {
     --rose: #CC8A8F;
@@ -187,6 +192,41 @@
   <footer>
     Data: <a href="https://data.cityofnewyork.us" target="_blank" rel="noopener">NYC Open Data</a> · Columbia GSAPP · Computational Design Workflows, 2026
   </footer>
+
+  <!-- ---------- Garden Guide chat widget ---------- -->
+  <div id="gg-widget" class="gg-widget">
+    <button id="gg-launcher" class="gg-launcher" aria-label="Open Garden Guide chat">
+      <span aria-hidden="true">🌿</span>
+    </button>
+
+    <div id="gg-panel" class="gg-panel" role="dialog" aria-label="Garden Guide chat" hidden>
+      <div class="gg-header">
+        <div class="gg-header-title">
+          <span class="gg-avatar" aria-hidden="true">🌱</span>
+          <div>
+            <strong>Garden Guide</strong>
+            <span class="gg-status">
+              <i id="gg-dot" class="gg-dot"></i>
+              <span id="gg-conn">Connecting…</span>
+            </span>
+          </div>
+        </div>
+        <button id="gg-close" class="gg-close" aria-label="Close chat">&times;</button>
+      </div>
+
+      <div id="gg-messages" class="gg-messages">
+        <!-- Greeting + Firebase history are rendered by garden-guide.js -->
+      </div>
+
+      <form id="gg-form" class="gg-input" autocomplete="off">
+        <input id="gg-text" type="text" placeholder="Ask about NYC gardens…" maxlength="500" />
+        <button id="gg-send" type="submit" class="gg-send" aria-label="Send message">&#10148;</button>
+      </form>
+      <div id="gg-hint" class="gg-hint">Ready</div>
+    </div>
+  </div>
+
+  <script src="garden-guide.js"></script>
 
 </body>
 </html>
