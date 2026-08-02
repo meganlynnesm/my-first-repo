@@ -204,7 +204,7 @@
         <div class="gg-header-title">
           <span class="gg-avatar" aria-hidden="true">🌱</span>
           <div>
-            <strong>Garden Guide</strong>
+            <strong>Your Garden Guide</strong>
             <span class="gg-status">
               <i id="gg-dot" class="gg-dot"></i>
               <span id="gg-conn">Planting...</span>
@@ -222,10 +222,12 @@
         <input id="gg-text" type="text" placeholder="Ask about NYC gardens…" maxlength="500" />
         <button id="gg-send" type="submit" class="gg-send" aria-label="Send message">&#10148;</button>
       </form>
-      <div id="gg-hint" class="gg-hint">Ready</div>
+      <div id="gg-hint" class="gg-hint">Ready!</div>
     </div>
   </div>
 
+  <!-- Local-only OpenAI key (gitignored; absent on the public site — that's expected) -->
+  <script src="garden-guide.key.js"></script>
   <script src="garden-guide.js"></script>
 
 </body>

@@ -7,10 +7,15 @@
 // a floating widget and given a garden-themed persona so it belongs to
 // this project rather than sitting on top of it.
 //
-// SECURITY NOTE (from the tutorial): the OpenAI key below lives in
-// client-side code for LEARNING ONLY. Anyone who opens this page can read
-// it. Don't commit a real key to a public repo. The tutorial's "04
-// Firebase Functions" example shows the secure production pattern.
+// This file uses the Firebase *compat* SDK, which is what index.html
+// loads (firebase-app-compat.js + firebase-database-compat.js). Do NOT
+// add `import ... from "firebase/app"` here — those ES-module imports are
+// a different setup and will crash this script.
+//
+// SECURITY NOTE: the OpenAI key below lives in client-side code for
+// LEARNING ONLY. Anyone who opens this page can read it. Never commit a
+// real key to a public repo. The tutorial's "04 Firebase Functions"
+// example shows the secure production pattern.
 // ============================================================
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -26,13 +31,10 @@ document.addEventListener('DOMContentLoaded', function () {
     messagingSenderId: "647378413700",
     appId: "1:647378413700:web:fdc597861682bfff093ad1",
 
-    // ⚠️ REQUIRED for the Realtime Database. Your config from the Firebase
-    // "web app" screen does NOT include this line — you have to CREATE a
-    // Realtime Database first (Build → Realtime Database → Create database),
-    // then copy the exact URL it shows you and paste it here. The value
-    // below is the usual default; if your database is in another region
-    // Firebase will show something like
-    //   https://chatty-garden-bot-default-rtdb.europe-west1.firebasedatabase.app
+    // ⚠️ REQUIRED for the Realtime Database. If the status dot stays on
+    // "Offline", create the database (Build → Realtime Database → Create
+    // database) and paste the EXACT URL it shows here. It may be a
+    // region URL like ...europe-west1.firebasedatabase.app
     databaseURL: "https://chatty-garden-bot-default-rtdb.firebaseio.com"
   };
 
@@ -43,10 +45,12 @@ document.addEventListener('DOMContentLoaded', function () {
   // ========================================================
   // STEP 2: OPENAI CONFIGURATION
   // ========================================================
-  // 👉 Paste your own key from https://platform.openai.com/api-keys
-  //    Until you do, Firebase still works and the bot will tell visitors
-  //    it isn't fully wired up yet.
-  const OPENAI_API_KEY = 'PASTE-YOUR-OPENAI-KEY-HERE';
+  // 👉 The key is NOT written here. It's loaded from garden-guide.key.js,
+  //    which is listed in .gitignore and therefore never pushed to GitHub.
+  //    (Template: garden-guide.key.example.js.) On the public site that file
+  //    is absent, so this falls back to the placeholder and the bot simply
+  //    says it isn't wired up — no key is ever exposed.
+  const OPENAI_API_KEY = window.GG_OPENAI_KEY || 'PASTE-YOUR-OPENAI-KEY-HERE';
   const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
   const OPENAI_MODEL   = 'gpt-4o-mini';
 
@@ -69,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // The greeting that always sits at the top of the thread
   const GREETING = "Hi! I'm your Garden Guide 🌿 Ask me anything about NYC's " +
-    "community gardens — how to find one, what grows well, or how to get involved.";
+    "community gardens - how to find one, what grows well, or how to get involved!";
 
   // ========================================================
   // STEP 3: ELEMENT REFERENCES
@@ -211,10 +215,12 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   async function makeApiCall(userMessage) {
-    if (!OPENAI_API_KEY || OPENAI_API_KEY === 'PASTE-YOUR-OPENAI-KEY-HERE') {
+    // Any value that isn't a real key (all our placeholders don't start
+    // with "sk-") means the key hasn't been added on this machine.
+    if (!OPENAI_API_KEY || !OPENAI_API_KEY.startsWith('sk-')) {
       throw new Error(
-        "I'm connected to Firebase, but my OpenAI key hasn't been added yet — " +
-        "so I can't generate answers. (Add it in garden-guide.js.)"
+        "I'm connected to Firebase, but my OpenAI key hasn't been added yet, " +
+        "so I can't generate answers. (Add it in garden-guide.key.js.)"
       );
     }
 

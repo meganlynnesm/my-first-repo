@@ -1,0 +1,6 @@
+# Local-only secrets — never commit the real OpenAI key
+site/garden-guide.key.js
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
