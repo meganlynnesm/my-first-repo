@@ -1,6 +1,15 @@
 # Local-only secrets — never commit the real OpenAI key
 site/garden-guide.key.js
 
+# Firebase Functions — installed packages and local secrets/logs
+functions/node_modules/
+functions/.env
+functions/.env.*
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
 # OS / editor cruft
 .DS_Store
 Thumbs.db

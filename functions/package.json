@@ -1,0 +1,13 @@
+{
+  "name": "functions",
+  "description": "Garden Guide secure OpenAI Cloud Function",
+  "private": true,
+  "main": "index.js",
+  "engines": {
+    "node": "20"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.6.0",
+    "firebase-functions": "^5.1.1"
+  }
+}

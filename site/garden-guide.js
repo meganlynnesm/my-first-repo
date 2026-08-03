@@ -1,27 +1,24 @@
 // ============================================================
-// Garden Guide — chat bot for the Green Thumbs project
+// Garden Guide — chat bot for the Green Thumbs project (SECURE version)
 // ------------------------------------------------------------
-// Adapted from the CDW "02 Chat Bot" tutorial (isohale/cdw-public-2026).
-// Same core as the tutorial — Firebase Realtime Database for message
-// history + the OpenAI Chat Completions API for replies — reshaped into
-// a floating widget and given a garden-themed persona so it belongs to
-// this project rather than sitting on top of it.
+// Adapted from the CDW tutorials "02 Chat Bot" + "04 Firebase Functions".
 //
-// This file uses the Firebase *compat* SDK, which is what index.html
-// loads (firebase-app-compat.js + firebase-database-compat.js). Do NOT
-// add `import ... from "firebase/app"` here — those ES-module imports are
-// a different setup and will crash this script.
+// What changed from the earlier version:
+//   • The OpenAI key is GONE from this file. Replies now come from a
+//     Cloud Function (functions/index.js) that holds the key server-side.
+//   • Visitors sign in with Google before chatting, so strangers can't
+//     run up the OpenAI bill.
+//   • Message history still lives in the Firebase Realtime Database, and
+//     the widget still fades in after the landing page.
 //
-// SECURITY NOTE: the OpenAI key below lives in client-side code for
-// LEARNING ONLY. Anyone who opens this page can read it. Never commit a
-// real key to a public repo. The tutorial's "04 Firebase Functions"
-// example shows the secure production pattern.
+// Uses the Firebase *compat* SDK (app + database + auth + functions),
+// loaded in index.html. Do NOT add ES-module `import` lines here.
 // ============================================================
 
 document.addEventListener('DOMContentLoaded', function () {
 
   // ========================================================
-  // STEP 1: FIREBASE CONFIGURATION  (your real project)
+  // STEP 1: FIREBASE SETUP  (your real project)
   // ========================================================
   const firebaseConfig = {
     apiKey: "AIzaSyBSn-BcM5pkaFafHXBNHMY6TTfzTgksRUQ",
@@ -30,43 +27,20 @@ document.addEventListener('DOMContentLoaded', function () {
     storageBucket: "chatty-garden-bot.firebasestorage.app",
     messagingSenderId: "647378413700",
     appId: "1:647378413700:web:fdc597861682bfff093ad1",
-
-    // ⚠️ REQUIRED for the Realtime Database. If the status dot stays on
-    // "Offline", create the database (Build → Realtime Database → Create
-    // database) and paste the EXACT URL it shows here. It may be a
-    // region URL like ...europe-west1.firebasedatabase.app
     databaseURL: "https://chatty-garden-bot-default-rtdb.firebaseio.com"
   };
 
-  // Initialize Firebase (compat SDK, loaded in index.html)
   firebase.initializeApp(firebaseConfig);
-  const database = firebase.database();
+  const database  = firebase.database();
+  const auth      = firebase.auth();
+  const functions = firebase.functions(); // default region: us-central1
 
   // ========================================================
-  // STEP 2: OPENAI CONFIGURATION
+  // STEP 2: NO OPENAI KEY HERE
   // ========================================================
-  // 👉 The key is NOT written here. It's loaded from garden-guide.key.js,
-  //    which is listed in .gitignore and therefore never pushed to GitHub.
-  //    (Template: garden-guide.key.example.js.) On the public site that file
-  //    is absent, so this falls back to the placeholder and the bot simply
-  //    says it isn't wired up — no key is ever exposed.
-  const OPENAI_API_KEY = window.GG_OPENAI_KEY || 'PASTE-YOUR-OPENAI-KEY-HERE';
-  const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
-  const OPENAI_MODEL   = 'gpt-4o-mini';
-
-  // The persona — this is what gives the bot a ROLE in the project.
-  const SYSTEM_PROMPT =
-    "You are Garden Guide, a warm, knowledgeable assistant for a Columbia " +
-    "GSAPP 'Green Thumbs' project about New York City's GreenThumb community " +
-    "gardens. You help visitors understand NYC's 635 community gardens, urban " +
-    "and community gardening, native and pollinator plants, composting, and how " +
-    "to get involved with a garden near them. Keep answers short (2-4 sentences), " +
-    "friendly, and encouraging. If a question is outside gardening or the project, " +
-    "gently steer back to the gardens.";
-
-  // Rate limiting (kept from the tutorial)
-  let lastApiCall = 0;
-  const MIN_CALL_INTERVAL = 1000; // 1s between calls
+  // Replies are produced by the "chatWithAI" Cloud Function. The key lives
+  // on the server (set with `firebase functions:secrets:set OPENAI_KEY`),
+  // so there is nothing secret in this file anymore.
 
   // Where messages live in the database (matches the tutorial's structure)
   const MESSAGES_REF = 'chat/messages';
@@ -89,6 +63,10 @@ document.addEventListener('DOMContentLoaded', function () {
   const hint      = document.getElementById('gg-hint');
   const connDot   = document.getElementById('gg-dot');
   const connLabel = document.getElementById('gg-conn');
+  const signInBtn = document.getElementById('gg-signin');
+  const signOutBtn= document.getElementById('gg-signout');
+  const userBar   = document.getElementById('gg-userbar');
+  const userLabel = document.getElementById('gg-user');
 
   // ========================================================
   // STEP 4: OPEN / CLOSE THE WIDGET
@@ -96,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function openPanel() {
     panel.hidden = false;
     launcher.classList.add('gg-hidden');
-    input.focus();
+    if (!input.disabled) input.focus();
     messages.scrollTop = messages.scrollHeight;
   }
   function closePanel() {
@@ -112,8 +90,6 @@ document.addEventListener('DOMContentLoaded', function () {
   // ========================================================
   // STEP 5: REAL-TIME DATABASE LISTENER
   // ========================================================
-  // Runs every time the chat history changes in Firebase, so the
-  // conversation stays in sync and survives a page reload.
   database.ref(MESSAGES_REF).on('value', function (snapshot) {
     const stored = snapshot.val() || {};
 
@@ -125,10 +101,7 @@ document.addEventListener('DOMContentLoaded', function () {
       addBubble(m.text, m.sender);
     });
 
-    // Re-add the typing indicator if a reply is still in flight, so this
-    // rebuild doesn't wipe it out mid-request.
-    renderTyping();
-
+    renderTyping(); // keep the "thinking…" bubble if a reply is in flight
     messages.scrollTop = messages.scrollHeight;
   });
 
@@ -144,6 +117,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const text = input.value.trim();
     if (!text) return;
 
+    // Must be signed in (the Cloud Function refuses anonymous requests).
+    if (!auth.currentUser) {
+      setHint('Please sign in to chat');
+      return;
+    }
+
     setSending(true);
     setHint('Sending…');
 
@@ -152,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
       await saveMessage(text, 'user');
       input.value = '';
 
-      // 2) Ask the Garden Guide (OpenAI) for a reply
+      // 2) Ask the secure Cloud Function for a reply
       setHint('Garden Guide is thinking…');
       showTyping(true);
       const reply = await getGardenGuideResponse(text);
@@ -166,11 +145,10 @@ document.addEventListener('DOMContentLoaded', function () {
       showTyping(false);
       console.error('Garden Guide error:', error);
       setHint('Something went wrong');
-      // Surface a friendly message in the thread instead of crashing
       await saveMessage('🌱 Sorry — I hit a snag: ' + error.message, 'bot');
     } finally {
       setSending(false);
-      input.focus();
+      if (auth.currentUser) input.focus();
     }
   }
 
@@ -186,73 +164,26 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // ========================================================
-  // STEP 8: OPENAI CALL  (with rate limiting + retry, from tutorial)
+  // STEP 8: SECURE REPLY  (calls the Cloud Function, not OpenAI directly)
   // ========================================================
   async function getGardenGuideResponse(userMessage) {
-    const now = Date.now();
-    const sinceLast = now - lastApiCall;
-    if (sinceLast < MIN_CALL_INTERVAL) {
-      await new Promise(r => setTimeout(r, MIN_CALL_INTERVAL - sinceLast));
-    }
-    lastApiCall = Date.now();
-
-    const maxRetries = 3;
-    let attempt = 0;
-    while (attempt < maxRetries) {
-      try {
-        return await makeApiCall(userMessage);
-      } catch (error) {
-        attempt++;
-        if (error.message.includes('429') && attempt < maxRetries) {
-          const wait = Math.pow(2, attempt) * 1000;
-          setHint('Rate limited — retrying in ' + (wait / 1000) + 's…');
-          await new Promise(r => setTimeout(r, wait));
-          continue;
-        }
-        throw error;
+    const chatWithAI = functions.httpsCallable('chatWithAI');
+    try {
+      const result = await chatWithAI({ message: userMessage });
+      return result.data.reply;
+    } catch (error) {
+      // Turn Firebase's error codes into friendly messages
+      if (error.code === 'functions/unauthenticated') {
+        throw new Error('Please sign in to chat with Garden Guide.');
+      } else if (error.code === 'functions/resource-exhausted') {
+        throw new Error('Rate limit reached — please wait a moment and try again.');
+      } else if (error.code === 'functions/invalid-argument') {
+        throw new Error('That message could not be sent. Try rephrasing.');
+      } else if (error.code === 'functions/not-found') {
+        throw new Error('The Garden Guide function isn\'t deployed yet.');
       }
+      throw new Error(error.message || 'Failed to get a reply.');
     }
-  }
-
-  async function makeApiCall(userMessage) {
-    // Any value that isn't a real key (all our placeholders don't start
-    // with "sk-") means the key hasn't been added on this machine.
-    if (!OPENAI_API_KEY || !OPENAI_API_KEY.startsWith('sk-')) {
-      throw new Error(
-        "I'm connected to Firebase, but my OpenAI key hasn't been added yet, " +
-        "so I can't generate answers. (Add it in garden-guide.key.js.)"
-      );
-    }
-
-    const response = await fetch(OPENAI_API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + OPENAI_API_KEY
-      },
-      body: JSON.stringify({
-        model: OPENAI_MODEL,
-        messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          { role: 'user',   content: userMessage }
-        ],
-        max_tokens: 200,
-        temperature: 0.7
-      })
-    });
-
-    if (!response.ok) {
-      const detail = await response.text().catch(() => '');
-      if (response.status === 401) throw new Error('Invalid OpenAI API key (401).');
-      if (response.status === 429) throw new Error('Rate limit / quota exceeded (429).');
-      throw new Error('API request failed: ' + response.status + ' ' + detail);
-    }
-
-    const data = await response.json();
-    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
-      throw new Error('Unexpected API response: ' + JSON.stringify(data));
-    }
-    return data.choices[0].message.content.trim();
   }
 
   // ========================================================
@@ -269,11 +200,9 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   let isTyping = false;
-  // Draw the animated "…" bubble (only when a reply is in flight). Safe to
-  // call repeatedly — it never creates a duplicate.
   function renderTyping() {
     if (!isTyping) return;
-    if (messages.querySelector('.gg-typing')) return; // already showing
+    if (messages.querySelector('.gg-typing')) return;
     const el = document.createElement('div');
     el.className = 'gg-msg gg-bot gg-typing';
     el.innerHTML = '<div class="gg-bubble"><i></i><i></i><i></i></div>';
@@ -297,34 +226,62 @@ document.addEventListener('DOMContentLoaded', function () {
   function setHint(text) { hint.textContent = text; }
 
   // ========================================================
-  // STEP 10: CONNECTION STATUS  (proves Firebase is connected)
+  // STEP 10: CONNECTION STATUS
   // ========================================================
   database.ref('.info/connected').on('value', function (snapshot) {
     if (snapshot.val() === true) {
       connDot.classList.remove('gg-off');
       connDot.classList.add('gg-on');
       connLabel.textContent = 'Connected';
-      console.log('Garden Guide: connected to Firebase ✅');
     } else {
       connDot.classList.remove('gg-on');
       connDot.classList.add('gg-off');
       connLabel.textContent = 'Offline';
-      console.log('Garden Guide: disconnected from Firebase ❌');
     }
   });
 
   // ========================================================
-  // STEP 11: INIT
+  // STEP 11: GOOGLE SIGN-IN
   // ========================================================
-  // Draw the greeting right away so the panel is never empty, even if
-  // Firebase hasn't connected yet. The real-time listener above re-draws
-  // it (greeting first, then history) once the database responds.
-  addBubble(GREETING, 'bot');
-  setHint('Ready');
+  const provider = new firebase.auth.GoogleAuthProvider();
 
-  // Only show the widget AFTER the landing page. Watch the hero section:
-  // while it's on screen the launcher stays hidden; once the visitor
-  // scrolls past it, the launcher fades in.
+  signInBtn.addEventListener('click', function () {
+    auth.signInWithPopup(provider).catch(function (error) {
+      console.error('Sign-in error:', error);
+      setHint('Sign-in failed: ' + error.message);
+    });
+  });
+  signOutBtn.addEventListener('click', function () {
+    auth.signOut();
+  });
+
+  // React to sign-in / sign-out: only signed-in visitors can type.
+  auth.onAuthStateChanged(function (user) {
+    if (user) {
+      signInBtn.hidden = true;
+      userBar.hidden = false;
+      userLabel.textContent = 'Signed in as ' + (user.displayName || user.email || 'you');
+      input.disabled = false;
+      sendBtn.disabled = false;
+      input.placeholder = 'Ask about NYC gardens…';
+      setHint('Ready');
+      if (!panel.hidden) input.focus();
+    } else {
+      signInBtn.hidden = false;
+      userBar.hidden = true;
+      input.disabled = true;
+      sendBtn.disabled = true;
+      input.placeholder = 'Sign in to chat…';
+      setHint('Sign in to start chatting');
+    }
+  });
+
+  // ========================================================
+  // STEP 12: INIT
+  // ========================================================
+  addBubble(GREETING, 'bot');
+
+  // Only show the widget AFTER the landing page (watch the hero section).
   const hero = document.querySelector('.hero');
   if (hero && 'IntersectionObserver' in window) {
     const observer = new IntersectionObserver(function (entries) {
@@ -334,9 +291,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }, { threshold: 0.4 });
     observer.observe(hero);
   } else {
-    // No hero or no observer support → just show it.
     widget.classList.add('gg-revealed');
   }
 
-  console.log('Garden Guide initialized 🌱');
+  console.log('Garden Guide (secure) initialized 🌱');
 });

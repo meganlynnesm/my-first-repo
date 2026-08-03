@@ -196,6 +196,47 @@
 .gg-send:hover:not(:disabled) { transform: scale(1.06); }
 .gg-send:disabled { opacity: 0.5; cursor: not-allowed; }
 
+/* ---------- Sign-in bar ---------- */
+.gg-auth {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 12px;
+  background: #fff;
+  border-top: 1px solid rgba(146, 47, 60, 0.12);
+}
+.gg-signin {
+  border: 1.5px solid rgba(146, 47, 60, 0.25);
+  background: var(--gg-offwhite);
+  color: var(--gg-maroon);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 9px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background .2s ease, border-color .2s ease;
+}
+.gg-signin:hover { background: #fff; border-color: var(--gg-maroon); }
+.gg-userbar {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: #6b4a4f;
+}
+.gg-user { font-weight: 500; }
+.gg-signout {
+  border: none;
+  background: none;
+  color: var(--gg-maroon);
+  font-family: inherit;
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+
 .gg-hint {
   padding: 0 14px 10px;
   background: #fff;

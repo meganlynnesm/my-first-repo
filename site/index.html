@@ -9,6 +9,8 @@
 <!-- Garden Guide chat widget: Firebase SDK + widget styles -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-functions-compat.js"></script>
 <link rel="stylesheet" href="garden-guide.css" />
 <style>
   :root {
@@ -218,6 +220,18 @@
         <!-- Greeting + Firebase history are rendered by garden-guide.js -->
       </div>
 
+      <!-- Sign-in bar: replies come from a secure Cloud Function that
+           requires a signed-in user. -->
+      <div id="gg-auth" class="gg-auth">
+        <button id="gg-signin" class="gg-signin" type="button">
+          <span aria-hidden="true">🔒</span> Sign in with Google to chat
+        </button>
+        <span id="gg-userbar" class="gg-userbar" hidden>
+          <span id="gg-user" class="gg-user"></span>
+          <button id="gg-signout" class="gg-signout" type="button">Sign out</button>
+        </span>
+      </div>
+
       <form id="gg-form" class="gg-input" autocomplete="off">
         <input id="gg-text" type="text" placeholder="Ask about NYC gardens…" maxlength="500" />
         <button id="gg-send" type="submit" class="gg-send" aria-label="Send message">&#10148;</button>
@@ -226,8 +240,6 @@
     </div>
   </div>
 
-  <!-- Local-only OpenAI key (gitignored; absent on the public site — that's expected) -->
-  <script src="garden-guide.key.js"></script>
   <script src="garden-guide.js"></script>
 
 </body>
