@@ -133,7 +133,7 @@ const boroughColor = name => boroughPalette[name] || "#a0787e";
 
 function nodeColor(d) {
   const boro = d.depth === 0 ? null : d.ancestors().find(a => a.depth === 1);
-  if (!boro) return "#e9dcc3"; // root — a shade below the ivory background
+  if (!boro) return "#efe8da"; // root — a shade below the off-white background
   const base = d3.hcl(boroughColor(boro.data.name));
   const up = 3 - d.depth; // garden=0, jurisdiction=1, borough=2
   return d3.hcl(base.h, Math.max(12, base.c - up * 7), Math.min(90, base.l + up * 15));
