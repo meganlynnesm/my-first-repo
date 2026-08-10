@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Green Thumbs — NYC Community Garden Map</title>
+
+<!-- MapLibre GL (same version used by the bench-shade-map project) -->
+<script src="https://unpkg.com/maplibre-gl@^5.6.1/dist/maplibre-gl.js"></script>
+<link href="https://unpkg.com/maplibre-gl@^5.6.1/dist/maplibre-gl.css" rel="stylesheet" />
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="garden-map.css" />
+</head>
+<body>
+
+  <!-- ---------- Editorial intro (consistent with the other subpages) ---------- -->
+  <section class="intro">
+    <div class="intro-nav">
+      <div class="intro-brand">
+        <div class="name">Megan Mackin</div>
+        <div class="role">Computational Design Workflows</div>
+      </div>
+      <nav class="intro-links">
+        <a href="../index.html">Home</a>
+        <a href="../mini-games/index.html">Mini Games<sup>4</sup></a>
+        <a href="../green-thumb/index.html">Green Thumb<sup>635</sup></a>
+        <a class="active" href="../garden-map/index.html">Garden Map<sup>NYC</sup></a>
+        <a href="../garden-timeline/index.html">Over Time<sup>WIP</sup></a>
+        <a href="../garden-match/index.html">Matchmaker<sup>&hearts;</sup></a>
+      </nav>
+    </div>
+
+    <div class="intro-center">
+      <h1 class="intro-title">Garden Map</h1>
+      <p class="intro-desc">Every NYC GreenThumb community garden, placed on the map &amp; coloured by borough — the same 635 gardens, seen in space</p>
+      <a class="intro-cta" href="#about-map">About this map &#8595;</a>
+    </div>
+  </section>
+
+  <!-- ---------- Contextual statement (assignment requirement) ---------- -->
+  <section class="context" id="about-map">
+    <div class="eyebrow">Geospatial structure</div>
+    <h2>Where the gardens actually are</h2>
+    <p>The circle-packing chart shows the GreenThumb network as a <em>hierarchy</em> —
+      borough, jurisdiction, footprint. This map answers a different question:
+      <em>where</em> are these 635 gardens on the ground? Each dot is one garden,
+      positioned by its real latitude and longitude, coloured by borough to echo the
+      packing chart, and sized by footprint so the larger farms read at a glance.</p>
+    <p>Click any borough in the legend to isolate it; click a garden for its
+      jurisdiction, size, status, and address. The two objects share a single dataset,
+      so the map and the chart always tell the same story from two angles.</p>
+    <p class="meta">Built with <a href="https://maplibre.org" target="_blank" rel="noopener">MapLibre GL</a>
+      on a <a href="https://protomaps.com" target="_blank" rel="noopener">Protomaps</a> vector base
+      (reused from my bench-shade-map project). Data:
+      <a href="https://data.cityofnewyork.us" target="_blank" rel="noopener">NYC Open Data — GreenThumb Garden Info</a>.</p>
+  </section>
+
+  <!-- ---------- Map ---------- -->
+  <div class="map-shell">
+    <div id="map"></div>
+
+    <div class="gm-panel">
+      <h1>NYC Gardens</h1>
+      <p class="gm-sub">GreenThumb network</p>
+
+      <div class="gm-stats">
+        <b id="gm-count">— gardens</b>
+        <span id="gm-area">— m² mapped</span>
+      </div>
+
+      <div class="gm-legend-title">Borough — click to filter</div>
+      <div id="gm-legend-items"></div>
+      <p class="gm-legend-hint">Dot size = garden footprint (m²)</p>
+
+      <button class="about-btn" id="about-btn" type="button">About this map</button>
+    </div>
+  </div>
+
+  <footer>
+    Data: <a href="https://data.cityofnewyork.us" target="_blank" rel="noopener">NYC Open Data</a>
+    · Columbia GSAPP · Computational Design Workflows, 2026
+  </footer>
+
+  <!-- About overlay -->
+  <div id="about-overlay" hidden>
+    <div id="about-card" role="dialog" aria-modal="true" aria-labelledby="about-title">
+      <button id="about-close" type="button" aria-label="Close">&times;</button>
+      <h3 id="about-title">NYC Community Garden Map</h3>
+      <p>Each dot is one of the 635 gardens in the NYC GreenThumb program, placed at
+        its real coordinates and coloured by borough. Dot size grows with the garden's
+        footprint in square metres.</p>
+      <p>Toggle boroughs on and off from the legend, and click any garden to see its
+        managing jurisdiction, size, status, and street address.</p>
+      <p class="note">Basemap © Protomaps / OpenStreetMap. Garden data from NYC Open
+        Data (GreenThumb Garden Info). Built with MapLibre GL JS.</p>
+    </div>
+  </div>
+
+  <!-- Shared dataset, then the map logic -->
+  <script src="../green-thumb/data.js"></script>
+  <script src="garden-map.js"></script>
+  <script>
+    // About overlay open/close (independent of the map)
+    (function () {
+      const overlay = document.getElementById('about-overlay');
+      const open = () => { overlay.hidden = false; };
+      const close = () => { overlay.hidden = true; };
+      document.getElementById('about-btn').addEventListener('click', open);
+      document.getElementById('about-close').addEventListener('click', close);
+      overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !overlay.hidden) close(); });
+    })();
+  </script>
+
+</body>
+</html>

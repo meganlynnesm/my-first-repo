@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Green Thumbs — Garden Matchmaker</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="garden-match.css" />
+</head>
+<body>
+
+  <!-- ---------- Editorial intro (consistent with the other subpages) ---------- -->
+  <section class="intro">
+    <div class="intro-nav">
+      <div class="intro-brand">
+        <div class="name">Megan Mackin</div>
+        <div class="role">Computational Design Workflows</div>
+      </div>
+      <nav class="intro-links">
+        <a href="../index.html">Home</a>
+        <a href="../mini-games/index.html">Mini Games<sup>4</sup></a>
+        <a href="../green-thumb/index.html">Green Thumb<sup>635</sup></a>
+        <a href="../garden-map/index.html">Garden Map<sup>NYC</sup></a>
+        <a href="../garden-timeline/index.html">Over Time<sup>WIP</sup></a>
+        <a class="active" href="../garden-match/index.html">Matchmaker<sup>♥</sup></a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- ---------- Quiz ---------- -->
+  <main class="stage">
+    <!-- Hero / start -->
+    <div id="gm-hero">
+      <div class="eyebrow">Engagement component</div>
+      <h1>Garden Matchmaker</h1>
+      <p>Answer three quick questions and we'll pair you with one of the 635 real
+        NYC GreenThumb community gardens — then point you to it on the map.</p>
+      <button class="btn primary big" id="gm-start" type="button">Find my garden 🌱</button>
+    </div>
+
+    <!-- Question / reveal stage (filled by JS) -->
+    <div id="gm-quiz" hidden>
+      <div id="gm-progress"></div>
+      <div id="gm-stage"></div>
+    </div>
+  </main>
+
+  <footer>
+    Matches drawn from <a href="https://data.cityofnewyork.us" target="_blank" rel="noopener">NYC Open Data — GreenThumb Garden Info</a>
+    · Columbia GSAPP · Computational Design Workflows, 2026
+  </footer>
+
+  <!-- Shared dataset, then the quiz logic -->
+  <script src="../green-thumb/data.js"></script>
+  <script src="garden-match.js"></script>
+</body>
+</html>

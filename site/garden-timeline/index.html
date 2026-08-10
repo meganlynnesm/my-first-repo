@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Green Thumbs — Gardens Over Time</title>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="garden-timeline.css" />
+</head>
+<body>
+
+  <!-- ---------- Editorial intro (consistent with the other subpages) ---------- -->
+  <section class="intro">
+    <div class="intro-nav">
+      <div class="intro-brand">
+        <div class="name">Megan Mackin</div>
+        <div class="role">Computational Design Workflows</div>
+      </div>
+      <nav class="intro-links">
+        <a href="../index.html">Home</a>
+        <a href="../mini-games/index.html">Mini Games<sup>4</sup></a>
+        <a href="../green-thumb/index.html">Green Thumb<sup>635</sup></a>
+        <a href="../garden-map/index.html">Garden Map<sup>NYC</sup></a>
+        <a class="active" href="../garden-timeline/index.html">Over Time<sup>WIP</sup></a>
+        <a href="../garden-match/index.html">Matchmaker<sup>&hearts;</sup></a>
+      </nav>
+    </div>
+
+    <div class="intro-center">
+      <h1 class="intro-title">Over Time</h1>
+      <p class="intro-desc">When did New York's community gardens take root? A time series of the GreenThumb network, year by year</p>
+      <a class="intro-cta" href="#chart">View chart &#8595;</a>
+    </div>
+  </section>
+
+  <!-- ---------- Contextual statement (assignment requirement) ---------- -->
+  <section class="context" id="chart">
+    <div class="eyebrow">Temporal structure</div>
+    <h2>Growth of the garden network</h2>
+    <p>The plan for this object is a time series of how many NYC community gardens
+      were established each year — read as a cumulative curve, the story of a
+      grassroots movement taking hold across the boroughs from the 1970s vacant-lot
+      era onward. The technique follows the D3 time-series approach from the
+      <a href="https://krisrs1128.github.io/stat679_notes/2022/06/01/week8-1.html" target="_blank" rel="noopener">stat679 notes</a>
+      (a <code>d3.scaleTime</code> x-axis with <code>d3.line</code> / <code>d3.area</code> path generators).</p>
+    <p><strong>This is a blank canvas for now.</strong> The garden dataset behind the
+      map and circle-packing chart doesn't carry a founding year, so the chart below
+      is scaffolded — scales, axes, and a ready <code>renderTimeline()</code> function —
+      but waiting on the year data before it can draw.</p>
+    <p class="meta">Built with <a href="https://d3js.org" target="_blank" rel="noopener">D3.js</a>.
+      Data pending: garden founding / establishment years.</p>
+  </section>
+
+  <div class="chart-wrap">
+    <div id="timeline"></div>
+  </div>
+
+  <footer>
+    Columbia GSAPP · Computational Design Workflows, 2026
+  </footer>
+
+  <script src="garden-timeline.js"></script>
+</body>
+</html>
