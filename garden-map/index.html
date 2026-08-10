@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Green Thumbs — NYC Community Garden Map</title>
 
-<!-- MapLibre GL (same version used by the bench-shade-map project) -->
+<!-- MapLibre GL — open-source, token-free (same API as the course's Mapbox tutorial) -->
 <script src="https://unpkg.com/maplibre-gl@^5.6.1/dist/maplibre-gl.js"></script>
 <link href="https://unpkg.com/maplibre-gl@^5.6.1/dist/maplibre-gl.css" rel="stylesheet" />
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="garden-map.css" />
 </head>
 <body>
@@ -27,7 +27,7 @@
         <a href="../green-thumb/index.html">Green Thumb<sup>635</sup></a>
         <a class="active" href="../garden-map/index.html">Garden Map<sup>NYC</sup></a>
         <a href="../garden-timeline/index.html">Over Time<sup>WIP</sup></a>
-        <a href="../garden-match/index.html">Matchmaker<sup>&hearts;</sup></a>
+        <a href="../garden-match/index.html">Matchmaker<sup>&#10048;</sup></a>
       </nav>
     </div>
 
@@ -51,8 +51,8 @@
       jurisdiction, size, status, and address. The two objects share a single dataset,
       so the map and the chart always tell the same story from two angles.</p>
     <p class="meta">Built with <a href="https://maplibre.org" target="_blank" rel="noopener">MapLibre GL</a>
-      on a <a href="https://protomaps.com" target="_blank" rel="noopener">Protomaps</a> vector base
-      (reused from my bench-shade-map project). Data:
+      (the token-free, open-source equivalent of the course's Mapbox tutorial) on a
+      <a href="https://protomaps.com" target="_blank" rel="noopener">Protomaps</a> vector base. Data:
       <a href="https://data.cityofnewyork.us" target="_blank" rel="noopener">NYC Open Data — GreenThumb Garden Info</a>.</p>
   </section>
 
@@ -92,7 +92,7 @@
         footprint in square metres.</p>
       <p>Toggle boroughs on and off from the legend, and click any garden to see its
         managing jurisdiction, size, status, and street address.</p>
-      <p class="note">Basemap © Protomaps / OpenStreetMap. Garden data from NYC Open
+      <p class="note">Basemap © Protomaps © OpenStreetMap. Garden data from NYC Open
         Data (GreenThumb Garden Info). Built with MapLibre GL JS.</p>
     </div>
   </div>

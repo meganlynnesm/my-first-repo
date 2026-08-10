@@ -19,7 +19,7 @@
   right: 24px;
   bottom: 24px;
   z-index: 9999;
-  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
   /* Hidden until the visitor scrolls past the landing page (see JS).
      .gg-revealed is toggled on by the IntersectionObserver. */
