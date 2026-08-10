@@ -16,7 +16,7 @@ body {
 }
 
 /* ---------- Editorial intro (matches the other subpages) ---------- */
-.intro { min-height: 100vh; background: var(--cream); color: var(--red); display: flex; flex-direction: column; padding: 32px 44px; }
+.intro { background: var(--cream); color: var(--red); display: flex; flex-direction: column; padding: 28px 44px 0; }
 .intro-nav { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; }
 .intro-brand .name { font-weight: 700; font-size: 13px; letter-spacing: .4px; text-transform: uppercase; }
 .intro-brand .role { font-size: 12px; margin-top: 2px; }
@@ -26,7 +26,7 @@ body {
 .intro-links a.active, .intro-links a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* ---------- Quiz stage ---------- */
-.stage { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 24px; text-align: center; }
+.stage { min-height: calc(100vh - 92px); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 24px 60px; text-align: center; }
 
 #gm-hero .eyebrow { text-transform: uppercase; letter-spacing: 3px; font-size: 12px; color: var(--maroon); font-weight: 700; }
 #gm-hero h1 { font-family: 'Playfair Display', Georgia, serif; font-weight: 500; font-size: clamp(40px, 8vw, 92px); line-height: 1; margin: 10px 0 18px; color: var(--red); }
