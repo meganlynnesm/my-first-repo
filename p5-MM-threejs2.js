@@ -1,12 +1,8 @@
 // Three.js Sketch 2: Occlusion Test (WebGPU)
 // Adapted from the official three.js example "webgpu_occlusion" -
 // this is a real ES module using three.js's newer WebGPURenderer and TSL
-// (node-based shading) system, which is a different runtime from the classic
-// WebGL build the rest of this page uses - see the <script type="importmap">
-// in p5-MM.html. Scoped to a fixed 400x400 canvas, dropped the full-window
-// resize handling, kept the off-black background, and recolored the plane's
-// two states + the sphere to the site's maroon and pink instead of the
-// original green/yellow/blue.
+// (node-based shading) system. Scoped to a fixed 400x400 canvas, dropped the full-window
+// resize handling, kept the off-black background.
 //
 // Note: this requires a browser with WebGPU support (recent Chrome/Edge).
 // In a browser without it, this canvas simply won't render.
@@ -43,7 +39,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
     }
 
     // Runs once per frame, before drawing: ask the renderer whether
-    // "testObject" (our sphere) is completely hidden behind other geometry
+    // "testObject" ( sphere) is completely hidden behind other geometry
     // from the camera's current point of view.
     async update(frame) {
       var isOccluded = frame.renderer.isOccluded(this.testObject);

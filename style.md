@@ -1,5 +1,6 @@
 # Style Guide: Atompunk
 
+NOTE: this was from my original CDW submission exploring Style Guides 
 A retro-futurist aesthetic seen through the eyes of the 1950s-60s Atomic Age and Cold War — a cousin of Raygun Gothic, but colder and more mechanical. Where Raygun Gothic is utopian space-opera optimism, Atompunk carries an undercurrent of Cold War unease: giant humming analog computers, civil-defense signage, suburban conformity, and nuclear anxiety just beneath the chrome. Reference: [Atompunk — Aesthetics Wiki](https://aesthetics.fandom.com/wiki/Atompunk).
 
 Palette, font pairing, and background-pattern details below also draw directly from period pulp sci-fi cover art (*Science Fiction Quarterly* "Nov." issue, *Amazing Stories* "I, Rocket"/"Murder in Space" issue, and classic robot-and-console space-station illustration) — see the **Background Patterns & Grids** section for specifics.

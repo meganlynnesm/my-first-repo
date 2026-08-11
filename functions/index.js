@@ -3,8 +3,7 @@
 // ------------------------------------------------------------
 // Based on the CDW "04 Firebase Functions" tutorial. This is the
 // server-side half: the browser calls this function, and THIS function
-// calls OpenAI using a key that lives only on Google's servers. The key
-// is never sent to the browser, so it can't be stolen from the page.
+// calls OpenAI using a key that lives only on Google's servers.
 //
 // The tutorial used the old `functions.config().openai.key` method, which
 // Google retired in 2026. This file uses the current replacement —

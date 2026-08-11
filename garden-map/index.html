@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Green Thumbs — NYC Community Garden Map</title>
 
-<!-- MapLibre GL — open-source, token-free (same API as the course's Mapbox tutorial) -->
+<!-- MapLibre GL — open-source, token-free (I used Mario's MapLibre tutotrial and my existing base -->
 <script src="https://unpkg.com/maplibre-gl@^5.6.1/dist/maplibre-gl.js"></script>
 <link href="https://unpkg.com/maplibre-gl@^5.6.1/dist/maplibre-gl.css" rel="stylesheet" />
 
@@ -21,7 +21,7 @@
 </head>
 <body>
 
-  <!-- ---------- Editorial intro (consistent with the other subpages) ---------- -->
+  <!-- ---------- Editorial intro ---------- -->
   <section class="intro">
     <div class="intro-nav">
       <div class="intro-brand">
@@ -45,15 +45,15 @@
     </div>
   </section>
 
-  <!-- ---------- Contextual statement (assignment requirement) ---------- -->
+  <!-- ---------- Contextual statement ---------- -->
   <section class="context" id="about-map">
     <div class="eyebrow">Geospatial structure</div>
     <h2>Where the gardens actually are</h2>
     <p>The circle-packing chart shows the GreenThumb network as a <em>hierarchy</em> —
       borough, jurisdiction, footprint. This map answers a different question:
       <em>where</em> are these 635 gardens on the ground? Each dot is one garden,
-      positioned by its real latitude and longitude, coloured by borough to echo the
-      packing chart, and sized by footprint so the larger farms read at a glance.</p>
+      positioned by its latitude and longitude, coloured by borough to echo the
+      packing chart, and sized by footprint so the larger gardens read at a glance.</p>
     <p>Click any borough in the legend to isolate it; click a garden for its
       jurisdiction, size, status, and address. The two objects share a single dataset,
       so the map and the chart always tell the same story from two angles.</p>
@@ -76,7 +76,7 @@
         <span id="gm-area">— m² mapped</span>
       </div>
 
-      <div class="gm-legend-title">Borough — click to filter</div>
+      <div class="gm-legend-title">Borough: click to filter</div>
       <div id="gm-legend-items"></div>
       <p class="gm-legend-hint">Dot size = garden footprint (m²)</p>
 

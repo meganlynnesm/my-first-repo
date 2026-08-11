@@ -2,11 +2,11 @@
 //  garden-match.js  —  Garden Matchmaker  (the "engagement" object)
 // ===========================================================================
 //
-//  WHAT THIS FILE DOES, IN PLAIN ENGLISH
+//  WHAT THIS FILE DOES:
 //  -------------------------------------
 //  A tiny quiz. The visitor answers three questions, and we pair them with ONE
 //  real NYC community garden from our data by scoring every garden against
-//  their answers and picking the best fit. Then we show a "reveal" card and a
+//  their answers and picking the best fit. Then  show a "reveal" card and a
 //  button to run it again. It reuses the SAME garden data as the map + chart.
 //
 //  THE FLOW (top to bottom)
@@ -19,11 +19,6 @@
 //    6. reveal(): pick the top-scoring garden and show its card.
 //    7. Wire up the "Start" button to kick everything off.
 //
-//  KEY IDEA: STATE
-//  ---------------
-//  "State" just means "what the program remembers right now". Here it's two
-//  things: `answers` (what the visitor has chosen) and `step` (which question
-//  we're on). Almost every interactive page is: change state → redraw.
 // ===========================================================================
 
 
@@ -74,7 +69,7 @@ const QUESTIONS = [
     ],
   },
   {
-    id: "size", prompt: "How much earth do you want under your nails?",
+    id: "size", prompt: "How much soil do you want to be surrounded by?",
     options: [
       { label: "A cozy pocket plot", val: "small" },
       { label: "Room to grow", val: "mid" },
@@ -82,7 +77,7 @@ const QUESTIONS = [
     ],
   },
   {
-    id: "mood", prompt: "What kind of place are you after?",
+    id: "mood", prompt: "What kind of vibe are you after?",
     options: [
       { label: "Active & buzzing", val: "active" },
       { label: "A quiet hidden gem", val: "quiet" },
@@ -196,7 +191,7 @@ function reveal() {
 
 
 // --- 7. START ---------------------------------------------------------------
-// Nothing happens until the visitor presses "Find my garden": we hide the
+// Nothing happens until the visitor presses "Find my garden":  hide the
 // intro, show the quiz area, and render the first question.
 document.getElementById("gm-start").addEventListener("click", () => {
   document.getElementById("gm-hero").hidden = true;
