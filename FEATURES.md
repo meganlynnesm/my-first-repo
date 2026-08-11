@@ -16,7 +16,7 @@ linked from a shared nav and the landing cards.
 |---|---|---|---|---|---|
 | 1 | 2D spatial canvas | `mini-games/` | p5.js | ✅ built | ⬜ to write |
 | 2 | 3D spatial canvas | `mini-games/` | three.js | ✅ built | ⬜ to write |
-| 3 | Temporal structure | `garden-timeline/` | D3 (scaleTime) | 🟡 blank-canvas scaffold | ✅ on page |
+| 3 | Temporal structure | `garden-timeline/` | D3 v3 radar (Bremer) | ✅ built (real open-hours) | ✅ on page |
 | 4 | Relational structure | `green-thumb/` | D3 (circle-packing) | ✅ built | ⬜ to write |
 | 5 | Geospatial structure | `garden-map/` | MapLibre GL + Protomaps | ✅ built | ✅ on page |
 | 6 | Engagement component | `garden-match/` | Vanilla JS quiz | ✅ built | ✅ on page (hero) |
@@ -42,7 +42,7 @@ Legend: ✅ done · 🟡 partial · ⬜ to do
 
 **Done**
 - [x] Geospatial map (MapLibre, borough colours, filter, popups)
-- [x] Temporal blank-canvas scaffold (D3 axes + `renderTimeline()`)
+- [x] Temporal radar "open-hours clock" — real Saturday hours by borough (Bremer radar, D3 v3)
 - [x] Engagement "Garden Matchmaker" quiz
 - [x] Promote site to repo root (home = Green Thumbs)
 - [x] Beginner-friendly code comments on the new pages
@@ -51,7 +51,7 @@ Legend: ✅ done · 🟡 partial · ⬜ to do
 
 **Next**
 - [ ] **Contextual statements** for objects 1, 2, 4, 7 (short "what I attempted / references / data" blurbs, in Megan's voice)
-- [ ] **Temporal data** — source garden founding years, then call `renderTimeline()` (currently paused)
+- [x] **Temporal data** resolved — dataset has no founding year, so the temporal object uses real *open hours* instead
 - [ ] **Deploy** — confirm GitHub Pages serves the repo root; grab the live URL for submission
 - [ ] **Relational decision** — keep circle-packing, or add a node-link graph to match the course tutorial
 - [ ] **Repo cleanup** — remove orphaned root files (`feel-good.*`, loose `p5-MM-*`, `p5_2D.js`, `style.md`) once confirmed
@@ -72,7 +72,7 @@ Legend: ✅ done · 🟡 partial · ⬜ to do
 ## Data sources
 
 - **NYC Open Data — GreenThumb Garden Info** → `green-thumb/data.js` (635 gardens; 579 have coordinates).
-- Pending: a source for garden **founding years** (for the temporal chart).
+- Temporal chart uses garden **Saturday open hours** (`openhrssa`) from the same dataset — 308 of 635 gardens list them. (No founding-year field exists, so open hours is the real time dimension.)
 
 ## Constraints & gotchas
 
